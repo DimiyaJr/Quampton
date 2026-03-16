@@ -18,7 +18,7 @@ import {
   ModalContent,
   useDisclosure,
 } from "@nextui-org/react";
-import { IconEdit, IconTrashX, IconSquareRoundedPlus, IconX } from "@tabler/icons-react";
+import { IconEdit, IconTrashX, IconSquareRoundedPlus } from "@tabler/icons-react";
 import { categoryService } from "@/lib/services/categories";
 
 interface ProductCategory {
@@ -166,9 +166,8 @@ export default function ProductCategoriesPage() {
 
       <Modal isOpen={isAddOpen} onClose={onAddClose} size="sm" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>Add New Category</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={onAddClose}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <Input
@@ -189,9 +188,8 @@ export default function ProductCategoriesPage() {
 
       <Modal isOpen={isEditOpen} onClose={onEditClose} size="sm" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>Edit Category</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={onEditClose}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <Input
@@ -212,9 +210,8 @@ export default function ProductCategoriesPage() {
 
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>Confirm Delete</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={onDeleteClose}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <p>Are you sure you want to delete this category? This action cannot be undone.</p>

@@ -30,7 +30,6 @@ import {
   Select,
   DatePicker,
 } from "@nextui-org/react";
-import { IconX, IconEdit, IconTrashX } from "@tabler/icons-react";
 import API_ENPOINTS from "../API";
 import config from "../config";
 import { AxiosResponse } from "axios";
@@ -1104,9 +1103,8 @@ const handleCheckout = async () => {
       {/* Checkout Modal */}
       <Modal isOpen={checkoutModalOpen} onClose={() => setCheckoutModalOpen(false)} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>Invoice</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={() => setCheckoutModalOpen(false)}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <div ref={modalRef} dangerouslySetInnerHTML={{ __html: renderInvoiceTemplate() }} />

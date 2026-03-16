@@ -20,7 +20,7 @@ import {
   ModalFooter,
   Chip,
 } from "@nextui-org/react";
-import { IconTrashX, IconSquareRoundedPlus, IconEdit, IconX } from "@tabler/icons-react";
+import { IconTrashX, IconSquareRoundedPlus, IconEdit } from "@tabler/icons-react";
 import { customerService } from "@/lib/services/customers";
 import { countries } from "@/app/data/Countries";
 
@@ -244,9 +244,8 @@ export default function CustomersPage() {
 
       <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>Add New Customer</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={() => { onAddClose(); resetForm(); }}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>
           <ModalFooter>
@@ -258,9 +257,8 @@ export default function CustomersPage() {
 
       <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>Edit Customer</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={() => { onEditClose(); resetForm(); }}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>
           <ModalFooter>
@@ -272,9 +270,8 @@ export default function CustomersPage() {
 
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>Confirm Delete</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={onDeleteClose}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <p>Are you sure you want to delete <strong>{editingCustomer?.name}</strong>? This action cannot be undone.</p>

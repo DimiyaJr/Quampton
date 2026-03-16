@@ -20,7 +20,6 @@ import {
   Chip,
 } from "@nextui-org/react";
 import { supabase } from "@/lib/supabase";
-import { IconX } from "@tabler/icons-react";
 
 interface User {
   id: string;
@@ -240,9 +239,8 @@ export default function UsersPage() {
 
       <Modal isOpen={isOpen} onClose={onClose} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="relative pr-10">
+          <ModalHeader>
             <span>{editingUser ? "Edit User" : "Add New User"}</span>
-            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={onClose}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <div className="flex flex-col gap-4">
