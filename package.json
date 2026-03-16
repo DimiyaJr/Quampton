@@ -13,16 +13,20 @@
 		"@nextui-org/react": "^2.4.8",
 		"@supabase/supabase-js": "^2.39.0",
 		"@tabler/icons-react": "^3.23.0",
+		"axios": "^1.13.6",
 		"chart.js": "^4.4.9",
 		"clsx": "2.1.1",
 		"framer-motion": "^11.5.6",
+		"html-to-image": "^1.11.13",
 		"html2canvas": "^1.4.1",
+		"html2pdf.js": "^0.14.0",
 		"jspdf": "^2.5.2",
 		"next": "^14.2.4",
 		"next-themes": "^0.2.1",
 		"react": "18.3.1",
 		"react-chartjs-2": "^5.3.0",
-		"react-dom": "18.3.1"
+		"react-dom": "18.3.1",
+		"solar-icon-set": "^2.0.1"
 	},
 	"devDependencies": {
 		"@next/eslint-plugin-next": "^15.0.3",
