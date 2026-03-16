@@ -1,0 +1,774 @@
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+Error generating PDF: SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:5472:19)
+    at successSteps (node:internal/deps/undici/undici:5454:27)
+    at fullyReadBody (node:internal/deps/undici/undici:4381:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async consumeBody (node:internal/deps/undici/undici:5463:7)
+    at async d (/home/saysmulx/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/.next/server/app/api/generate-pdf/route.js:1:610)
+    at async /home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38411
+    at async e_.execute (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:27880)
+    at async e_.handle (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:39745)
+Error generating PDF: SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:5472:19)
+    at successSteps (node:internal/deps/undici/undici:5454:27)
+    at fullyReadBody (node:internal/deps/undici/undici:4381:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async consumeBody (node:internal/deps/undici/undici:5463:7)
+    at async d (/home/saysmulx/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/.next/server/app/api/generate-pdf/route.js:1:610)
+    at async /home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38411
+    at async e_.execute (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:27880)
+    at async e_.handle (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:39745)
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+BrokenPipeError: [Errno 32] Broken pipe
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151
+            throw new Error(`Could not find a production build in the '${opts.config.distDir}' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id`);
+                  ^
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-utils/filesystem.js:151:19)
+    at async initialize (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/lib/router-server.js:62:23)
+    at async NextCustomServer.prepare (/home/saysmulx/nodevenv/inventory.quamputon.com/sasmikadevmith955/retail-flow-app/20/lib/node_modules/next/dist/server/next.js:242:28)
+
+Node.js v20.18.3
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
