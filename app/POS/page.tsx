@@ -1104,9 +1104,9 @@ const handleCheckout = async () => {
       {/* Checkout Modal */}
       <Modal isOpen={checkoutModalOpen} onClose={() => setCheckoutModalOpen(false)} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="flex justify-between items-center pr-2">
+          <ModalHeader className="relative pr-10">
             <span>Invoice</span>
-            <Button isIconOnly size="sm" variant="light" onPress={() => setCheckoutModalOpen(false)}><IconX size={18} /></Button>
+            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={() => setCheckoutModalOpen(false)}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <div ref={modalRef} dangerouslySetInnerHTML={{ __html: renderInvoiceTemplate() }} />

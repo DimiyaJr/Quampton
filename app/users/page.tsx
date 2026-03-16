@@ -240,9 +240,9 @@ export default function UsersPage() {
 
       <Modal isOpen={isOpen} onClose={onClose} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="flex justify-between items-center pr-2">
+          <ModalHeader className="relative pr-10">
             <span>{editingUser ? "Edit User" : "Add New User"}</span>
-            <Button isIconOnly size="sm" variant="light" onPress={onClose}><IconX size={18} /></Button>
+            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={onClose}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <div className="flex flex-col gap-4">

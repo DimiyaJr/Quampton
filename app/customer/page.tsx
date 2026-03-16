@@ -244,9 +244,9 @@ export default function CustomersPage() {
 
       <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="flex justify-between items-center pr-2">
+          <ModalHeader className="relative pr-10">
             <span>Add New Customer</span>
-            <Button isIconOnly size="sm" variant="light" onPress={() => { onAddClose(); resetForm(); }}><IconX size={18} /></Button>
+            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={() => { onAddClose(); resetForm(); }}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>
           <ModalFooter>
@@ -258,9 +258,9 @@ export default function CustomersPage() {
 
       <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="lg" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="flex justify-between items-center pr-2">
+          <ModalHeader className="relative pr-10">
             <span>Edit Customer</span>
-            <Button isIconOnly size="sm" variant="light" onPress={() => { onEditClose(); resetForm(); }}><IconX size={18} /></Button>
+            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={() => { onEditClose(); resetForm(); }}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>
           <ModalFooter>
@@ -272,9 +272,9 @@ export default function CustomersPage() {
 
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton>
         <ModalContent>
-          <ModalHeader className="flex justify-between items-center pr-2">
+          <ModalHeader className="relative pr-10">
             <span>Confirm Delete</span>
-            <Button isIconOnly size="sm" variant="light" onPress={onDeleteClose}><IconX size={18} /></Button>
+            <Button isIconOnly size="sm" variant="light" className="absolute right-2 top-1/2 -translate-y-1/2" onPress={onDeleteClose}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <p>Are you sure you want to delete <strong>{editingCustomer?.name}</strong>? This action cannot be undone.</p>
