@@ -58,9 +58,9 @@ export default function Home() {
           <span style={{ display: "block", color: "#38bdf8" }}>
             Inventory Management
           </span>
-        </h1>
+        </h1> 
 
-        <p style={{
+        {/* <p style={{
           fontSize: "18px",
           color: "#94a3b8",
           lineHeight: "1.6",
@@ -68,7 +68,7 @@ export default function Home() {
           margin: "0 auto 48px",
         }}>
           Streamline your inventory, manage suppliers, track customers, and grow your business — all in one place.
-        </p>
+        </p> */}
 
         <NextLink href="/auth" style={{
           display: "inline-flex",

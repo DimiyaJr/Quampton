@@ -22,7 +22,7 @@ import {
   SelectItem,
   Image,
 } from "@nextui-org/react";
-import { IconEdit, IconTrashX, IconSquareRoundedPlus, IconPhoto } from "@tabler/icons-react";
+import { IconEdit, IconTrashX, IconSquareRoundedPlus, IconPhoto, IconX } from "@tabler/icons-react";
 import { productService } from "@/lib/services/products";
 import { categoryService } from "@/lib/services/categories";
 import config from "../../config";
@@ -351,9 +351,12 @@ export default function ProductPage() {
       </Table>
       </div>
 
-      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
+      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="lg">
         <ModalContent>
-          <ModalHeader>Add New Product</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Add New Product</span>
+            <Button isIconOnly size="sm" variant="light" onPress={() => { onAddClose(); resetForm(); }}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody><FormFields /></ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onAddClose(); resetForm(); }}>Cancel</Button>
@@ -362,9 +365,12 @@ export default function ProductPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
+      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="lg">
         <ModalContent>
-          <ModalHeader>Edit Product</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Edit Product</span>
+            <Button isIconOnly size="sm" variant="light" onPress={() => { onEditClose(); resetForm(); }}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody><FormFields /></ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onEditClose(); resetForm(); }}>Cancel</Button>
@@ -373,9 +379,12 @@ export default function ProductPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm">
         <ModalContent>
-          <ModalHeader>Confirm Delete</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Confirm Delete</span>
+            <Button isIconOnly size="sm" variant="light" onPress={onDeleteClose}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody>
             <p>Are you sure you want to delete <strong>{editingProduct?.name}</strong>? This action cannot be undone.</p>
           </ModalBody>

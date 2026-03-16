@@ -18,7 +18,7 @@ import {
   ModalContent,
   useDisclosure,
 } from "@nextui-org/react";
-import { IconEdit, IconTrashX, IconSquareRoundedPlus } from "@tabler/icons-react";
+import { IconEdit, IconTrashX, IconSquareRoundedPlus, IconX } from "@tabler/icons-react";
 import { categoryService } from "@/lib/services/categories";
 
 interface ProductCategory {
@@ -164,9 +164,12 @@ export default function ProductCategoriesPage() {
         </TableBody>
       </Table>
 
-      <Modal isOpen={isAddOpen} onClose={onAddClose}>
+      <Modal isOpen={isAddOpen} onClose={onAddClose} size="sm">
         <ModalContent>
-          <ModalHeader>Add New Category</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Add New Category</span>
+            <Button isIconOnly size="sm" variant="light" onPress={onAddClose}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody>
             <Input
               label="Category Name"
@@ -178,19 +181,18 @@ export default function ProductCategoriesPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" variant="light" onPress={onAddClose}>
-              Cancel
-            </Button>
-            <Button color="primary" onPress={handleAddProductCategory}>
-              Add Category
-            </Button>
+            <Button color="danger" variant="light" onPress={onAddClose}>Cancel</Button>
+            <Button color="primary" onPress={handleAddProductCategory}>Add Category</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isEditOpen} onClose={onEditClose}>
+      <Modal isOpen={isEditOpen} onClose={onEditClose} size="sm">
         <ModalContent>
-          <ModalHeader>Edit Category</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Edit Category</span>
+            <Button isIconOnly size="sm" variant="light" onPress={onEditClose}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody>
             <Input
               label="Category Name"
@@ -202,29 +204,24 @@ export default function ProductCategoriesPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" variant="light" onPress={onEditClose}>
-              Cancel
-            </Button>
-            <Button color="primary" onPress={handleUpdateProductCategory}>
-              Update Category
-            </Button>
+            <Button color="danger" variant="light" onPress={onEditClose}>Cancel</Button>
+            <Button color="primary" onPress={handleUpdateProductCategory}>Update Category</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm">
         <ModalContent>
-          <ModalHeader>Confirm Delete</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Confirm Delete</span>
+            <Button isIconOnly size="sm" variant="light" onPress={onDeleteClose}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody>
             <p>Are you sure you want to delete this category? This action cannot be undone.</p>
           </ModalBody>
           <ModalFooter>
-            <Button color="default" variant="light" onPress={onDeleteClose}>
-              Cancel
-            </Button>
-            <Button color="danger" onPress={handleDeleteProceed}>
-              Delete
-            </Button>
+            <Button color="default" variant="light" onPress={onDeleteClose}>Cancel</Button>
+            <Button color="danger" onPress={handleDeleteProceed}>Delete</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

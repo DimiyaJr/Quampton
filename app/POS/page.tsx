@@ -1102,10 +1102,11 @@ const handleCheckout = async () => {
       </div>
   
       {/* Checkout Modal */}
-      <Modal isOpen={checkoutModalOpen} onClose={() => setCheckoutModalOpen(false)} size="xl">
+      <Modal isOpen={checkoutModalOpen} onClose={() => setCheckoutModalOpen(false)} size="lg">
         <ModalContent>
-          <ModalHeader>
-            {/* <h3 id="modal-title">Invoice</h3> */}
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Invoice</span>
+            <Button isIconOnly size="sm" variant="light" onPress={() => setCheckoutModalOpen(false)}><IconX size={18} /></Button>
           </ModalHeader>
           <ModalBody>
             <div ref={modalRef} dangerouslySetInnerHTML={{ __html: renderInvoiceTemplate() }} />
@@ -1114,7 +1115,7 @@ const handleCheckout = async () => {
             <Button onClick={generatePDF} color="secondary" fullWidth>
               Export as PDF
             </Button>
-            <Button onClick={handleCheckoutClose} color="default" fullWidth >
+            <Button onClick={handleCheckoutClose} color="default" fullWidth>
               Close
             </Button>
           </ModalFooter>

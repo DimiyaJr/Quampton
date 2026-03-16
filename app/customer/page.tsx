@@ -20,7 +20,7 @@ import {
   ModalFooter,
   Chip,
 } from "@nextui-org/react";
-import { IconTrashX, IconSquareRoundedPlus, IconEdit } from "@tabler/icons-react";
+import { IconTrashX, IconSquareRoundedPlus, IconEdit, IconX } from "@tabler/icons-react";
 import { customerService } from "@/lib/services/customers";
 import { countries } from "@/app/data/Countries";
 
@@ -242,9 +242,12 @@ export default function CustomersPage() {
         </Table>
       </div>
 
-      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
+      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="lg">
         <ModalContent>
-          <ModalHeader>Add New Customer</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Add New Customer</span>
+            <Button isIconOnly size="sm" variant="light" onPress={() => { onAddClose(); resetForm(); }}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onAddClose(); resetForm(); }}>Cancel</Button>
@@ -253,9 +256,12 @@ export default function CustomersPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
+      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="lg">
         <ModalContent>
-          <ModalHeader>Edit Customer</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Edit Customer</span>
+            <Button isIconOnly size="sm" variant="light" onPress={() => { onEditClose(); resetForm(); }}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onEditClose(); resetForm(); }}>Cancel</Button>
@@ -264,9 +270,12 @@ export default function CustomersPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm">
         <ModalContent>
-          <ModalHeader>Confirm Delete</ModalHeader>
+          <ModalHeader className="flex justify-between items-center pr-2">
+            <span>Confirm Delete</span>
+            <Button isIconOnly size="sm" variant="light" onPress={onDeleteClose}><IconX size={18} /></Button>
+          </ModalHeader>
           <ModalBody>
             <p>Are you sure you want to delete <strong>{editingCustomer?.name}</strong>? This action cannot be undone.</p>
           </ModalBody>
