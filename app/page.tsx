@@ -36,7 +36,7 @@ export default function Home() {
       }} />
 
       <div style={{ textAlign: "center", maxWidth: "700px", zIndex: 1 }}>
-        <div style={{ marginBottom: "32px" }}>
+        {/* <div style={{ marginBottom: "32px" }}>
           <Image
             src="/logo2.jpg"
             alt="Retail Flow"
@@ -44,7 +44,7 @@ export default function Home() {
             height={70}
             style={{ objectFit: "contain", filter: "brightness(1.1)" }}
           />
-        </div>
+        </div> */}
 
         <h1 style={{
           fontSize: "clamp(32px, 5vw, 56px)",
@@ -84,7 +84,7 @@ export default function Home() {
           boxShadow: "0 8px 32px rgba(14,165,233,0.4)",
           border: "2px solid #0ea5e9",
         }}>
-          Get Started — Login
+          Get Started
         </NextLink>
 
         <div style={{
