@@ -10,6 +10,7 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
+		"@netlify/plugin-nextjs": "^5.15.9",
 		"@nextui-org/react": "^2.4.8",
 		"@supabase/supabase-js": "^2.39.0",
 		"@tabler/icons-react": "^3.23.0",
