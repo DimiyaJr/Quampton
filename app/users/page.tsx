@@ -238,7 +238,7 @@ export default function UsersPage() {
       </Table>
       </div>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+      <Modal isOpen={isOpen} onClose={onClose} size="lg" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>{editingUser ? "Edit User" : "Add New User"}</span>

@@ -164,7 +164,7 @@ export default function ProductCategoriesPage() {
         </TableBody>
       </Table>
 
-      <Modal isOpen={isAddOpen} onClose={onAddClose} size="sm">
+      <Modal isOpen={isAddOpen} onClose={onAddClose} size="sm" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>Add New Category</span>
@@ -187,7 +187,7 @@ export default function ProductCategoriesPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isEditOpen} onClose={onEditClose} size="sm">
+      <Modal isOpen={isEditOpen} onClose={onEditClose} size="sm" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>Edit Category</span>
@@ -210,7 +210,7 @@ export default function ProductCategoriesPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm">
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>Confirm Delete</span>

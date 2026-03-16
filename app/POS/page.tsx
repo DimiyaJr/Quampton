@@ -1102,7 +1102,7 @@ const handleCheckout = async () => {
       </div>
   
       {/* Checkout Modal */}
-      <Modal isOpen={checkoutModalOpen} onClose={() => setCheckoutModalOpen(false)} size="lg">
+      <Modal isOpen={checkoutModalOpen} onClose={() => setCheckoutModalOpen(false)} size="lg" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>Invoice</span>

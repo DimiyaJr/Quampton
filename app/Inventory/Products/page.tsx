@@ -351,7 +351,7 @@ export default function ProductPage() {
       </Table>
       </div>
 
-      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="lg">
+      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="lg" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>Add New Product</span>
@@ -365,7 +365,7 @@ export default function ProductPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="lg">
+      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="lg" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>Edit Product</span>
@@ -379,7 +379,7 @@ export default function ProductPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm">
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton>
         <ModalContent>
           <ModalHeader className="flex justify-between items-center pr-2">
             <span>Confirm Delete</span>
