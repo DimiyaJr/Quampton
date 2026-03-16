@@ -3,14 +3,109 @@
 @tailwind utilities;
 
 @layer base {
-  button {
-    min-height: 40px;
-    font-weight: 500;
+  * {
+    box-sizing: border-box;
   }
 
-  button:not([class*="bg-"]):not([class*="border-"]) {
+  body {
+    background: #f8fafc;
+  }
+}
+
+@layer components {
+  button[data-slot="base"],
+  button[type="submit"],
+  button[type="button"],
+  .nextui-button,
+  button {
+    position: relative;
+    min-height: 40px;
+    font-weight: 600 !important;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  button[data-color="primary"],
+  button.bg-primary {
     background: #0ea5e9 !important;
     color: white !important;
+    border: 2px solid #0ea5e9 !important;
+  }
+
+  button[data-color="primary"]:hover {
+    background: #0284c7 !important;
+    border-color: #0284c7 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+  }
+
+  button[data-color="secondary"] {
+    background: #64748b !important;
+    color: white !important;
+    border: 2px solid #64748b !important;
+  }
+
+  button[data-color="secondary"]:hover {
+    background: #475569 !important;
+    border-color: #475569 !important;
+  }
+
+  button[data-color="success"] {
+    background: #10b981 !important;
+    color: white !important;
+    border: 2px solid #10b981 !important;
+  }
+
+  button[data-color="success"]:hover {
+    background: #059669 !important;
+    border-color: #059669 !important;
+  }
+
+  button[data-color="warning"] {
+    background: #f59e0b !important;
+    color: white !important;
+    border: 2px solid #f59e0b !important;
+  }
+
+  button[data-color="warning"]:hover {
+    background: #d97706 !important;
+    border-color: #d97706 !important;
+  }
+
+  button[data-color="danger"] {
+    background: #ef4444 !important;
+    color: white !important;
+    border: 2px solid #ef4444 !important;
+  }
+
+  button[data-color="danger"]:hover {
+    background: #dc2626 !important;
+    border-color: #dc2626 !important;
+  }
+
+  button[data-variant="light"] {
+    background: transparent !important;
+    border: 2px solid transparent !important;
+  }
+
+  button[data-variant="bordered"] {
+    background: transparent !important;
+  }
+
+  button[data-variant="flat"] {
+    border: 2px solid transparent !important;
+  }
+
+  button:disabled,
+  button[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  button:not([data-color]):not([class*="bg-"]):not([data-variant="light"]):not([data-variant="bordered"]) {
+    background: #0ea5e9 !important;
+    color: white !important;
+    border: 2px solid #0ea5e9 !important;
   }
 }
 
@@ -18,6 +113,12 @@
   .btn-visible {
     background: #0ea5e9 !important;
     color: white !important;
-    border: 1px solid #0ea5e9 !important;
+    border: 2px solid #0ea5e9 !important;
+    font-weight: 600 !important;
+  }
+
+  .btn-visible:hover {
+    background: #0284c7 !important;
+    border-color: #0284c7 !important;
   }
 }
