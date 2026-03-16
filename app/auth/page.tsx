@@ -1,6 +1,7 @@
-"use client"
-import { Button, Input, Image } from "@nextui-org/react";
+"use client";
+import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
+import Image from "next/image";
 
 export default function AuthPage() {
   const [username, setUsername] = useState("");
@@ -29,14 +30,13 @@ export default function AuthPage() {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '/Inventory';
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        window.location.href = "/Inventory";
       } else {
-        setError(data.message || "Login failed");
+        setError(data.message || "Invalid username or password");
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } catch {
       setError("An error occurred during login. Please try again.");
     } finally {
       setLoading(false);
@@ -44,64 +44,113 @@ export default function AuthPage() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "70vh", width: "100%" }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20, padding: "40px", background: "rgba(255,255,255,0.05)", borderRadius: "16px", minWidth: "400px" }}>
-        <Image src="/logo.jpg" alt="logo" width={200} height={200} />
-        <h2 style={{ fontSize: "28px", fontWeight: "600", margin: "10px 0" }}>Inventory System</h2>
-        <h3 style={{ fontSize: "20px", fontWeight: "400", color: "#888" }}>Login to your account</h3>
+    <div style={{
+      minHeight: "100vh",
+      background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "20px",
+    }}>
+      <div style={{
+        background: "#ffffff",
+        borderRadius: "20px",
+        padding: "48px 40px",
+        width: "100%",
+        maxWidth: "440px",
+        boxShadow: "0 25px 60px rgba(0,0,0,0.4)",
+      }}>
+        <div style={{ textAlign: "center", marginBottom: "36px" }}>
+          <Image
+            src="/logo2.jpg"
+            alt="Retail Flow"
+            width={180}
+            height={55}
+            style={{ objectFit: "contain", marginBottom: "20px" }}
+          />
+          <h1 style={{ fontSize: "26px", fontWeight: "700", color: "#111827", margin: "0 0 8px" }}>
+            Welcome back
+          </h1>
+          <p style={{ fontSize: "15px", color: "#6b7280", margin: 0 }}>
+            Sign in to your account to continue
+          </p>
+        </div>
+
         {error && (
           <div style={{
-            color: "#ff4444",
-            background: "rgba(255,68,68,0.1)",
-            padding: "12px 20px",
-            borderRadius: "8px",
-            width: "100%",
+            background: "#fef2f2",
+            border: "1px solid #fecaca",
+            color: "#dc2626",
+            padding: "12px 16px",
+            borderRadius: "10px",
+            marginBottom: "20px",
+            fontSize: "14px",
+            fontWeight: "500",
             textAlign: "center",
-            fontWeight: "500"
           }}>
             {error}
           </div>
         )}
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 15, width: "100%" }}>
+
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <Input
-            isClearable
             label="Username"
             placeholder="Enter your username"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             required
             size="lg"
             variant="bordered"
+            classNames={{
+              inputWrapper: "border-gray-300 hover:border-sky-400 focus-within:border-sky-500",
+            }}
           />
           <Input
-            isClearable
             type="password"
             label="Password"
             placeholder="Enter your password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             size="lg"
             variant="bordered"
+            classNames={{
+              inputWrapper: "border-gray-300 hover:border-sky-400 focus-within:border-sky-500",
+            }}
           />
           <Button
             type="submit"
             color="primary"
-            radius="md"
             size="lg"
             isLoading={loading}
             style={{
-              marginTop: "10px",
-              fontWeight: "600",
-              fontSize: "16px"
+              marginTop: "8px",
+              height: "52px",
+              fontSize: "16px",
+              fontWeight: "700",
+              borderRadius: "10px",
+              background: "#0ea5e9",
+              color: "#ffffff",
             }}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
-        <div style={{ marginTop: "20px", fontSize: "14px", color: "#666", textAlign: "center" }}>
-          <p>Default credentials:</p>
-          <p><strong>Username:</strong> admin | <strong>Password:</strong> admin123</p>
+
+        <div style={{
+          marginTop: "28px",
+          padding: "16px",
+          background: "#f8fafc",
+          borderRadius: "10px",
+          border: "1px solid #e2e8f0",
+          textAlign: "center",
+        }}>
+          <p style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "6px", fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Default Credentials
+          </p>
+          <p style={{ fontSize: "14px", color: "#374151", margin: 0 }}>
+            <strong>Username:</strong> admin &nbsp;|&nbsp; <strong>Password:</strong> admin123
+          </p>
         </div>
       </div>
     </div>

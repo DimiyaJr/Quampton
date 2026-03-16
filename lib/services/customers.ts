@@ -12,7 +12,7 @@ export const customerService = {
     return data || [];
   },
 
-  async create(customer: any) {
+  async create(customer: { name: string; email?: string; contact?: string; address?: string; city?: string; country?: string; status?: number }) {
     const code = await this.generateCode();
     const { data, error } = await supabase
       .from('customers')
@@ -37,7 +37,7 @@ export const customerService = {
   },
 
   async delete(id: string) {
-    const { error} = await supabase
+    const { error } = await supabase
       .from('customers')
       .update({ status: 0 })
       .eq('id', id);
