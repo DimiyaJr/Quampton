@@ -85,9 +85,9 @@ export default function Home() {
           border: "2px solid #0ea5e9",
         }}>
           Get Started
-        </NextLink>
+        </NextLink> 
 
-        <div style={{
+        {/* <div style={{
           display: "flex",
           gap: "16px",
           justifyContent: "center",
@@ -112,7 +112,7 @@ export default function Home() {
               <p style={{ fontSize: "12px", color: "#64748b" }}>{feature.desc}</p>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );
