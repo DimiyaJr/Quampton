@@ -46,7 +46,7 @@ export default function AuthPage() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%)",
+      background: "#ffffff",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
