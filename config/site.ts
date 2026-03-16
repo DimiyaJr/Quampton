@@ -46,6 +46,10 @@ export const siteConfig = {
       label: "Customer",
       href: "/customer",
     },
+    {
+      label: "Users",
+      href: "/users",
+    },
   ],
   navMenuItems: [
     {

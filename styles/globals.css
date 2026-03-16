@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  button {
+    min-height: 40px;
+    font-weight: 500;
+  }
+
+  button:not([class*="bg-"]):not([class*="border-"]) {
+    background: #0ea5e9 !important;
+    color: white !important;
+  }
+}
+
+@layer utilities {
+  .btn-visible {
+    background: #0ea5e9 !important;
+    color: white !important;
+    border: 1px solid #0ea5e9 !important;
+  }
+}

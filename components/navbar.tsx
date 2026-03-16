@@ -17,7 +17,6 @@ import Image from "next/image";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import * as SolarIconSet from "solar-icon-set";
 import {
   TwitterIcon,
   GithubIcon,
@@ -93,8 +92,11 @@ export const Navbar = () => {
         </NavbarItem> */}
          <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
         <NavbarItem className="relative group hidden lg:flex">
-          <span className="cursor-pointer">
-            <SolarIconSet.UserCircle color= "#380556" size={24} iconStyle="Bold" ></SolarIconSet.UserCircle>
+          <span className="cursor-pointer flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#380556" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
           </span>
           <ul className="absolute hidden group-hover:flex flex-col bg-white shadow-lg mt-2 p-2 rounded right-0">
             {siteConfig.navMenuItems.map((item, index) => (
