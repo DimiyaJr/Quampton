@@ -71,10 +71,12 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const { data: passwordMatch } = await supabase.rpc("verify_password", {
-      user_id: user.id,
-      input_password: password,
+    const { data: verifiedUsers } = await supabase.rpc("verify_user_password", {
+      p_username: username,
+      p_password: password,
     });
+
+    const passwordMatch = verifiedUsers && verifiedUsers.length > 0;
 
     if (!passwordMatch) {
       return new Response(
