@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import axios, { AxiosError } from "axios";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   Input,
   Button,
-  Switch,
   Table,
-  Image,
   Modal,
-  Badge,
   TableHeader,
   TableColumn,
   TableBody,
@@ -20,38 +16,22 @@ import {
   ModalFooter,
   useDisclosure,
   ModalContent,
-  Chip,
-  Autocomplete,
-  AutocompleteSection,
-  AutocompleteItem,
-  DateInput,
-  Card,
-  SelectItem,
   Select,
+  SelectItem,
   DatePicker,
+  Chip,
+  Spinner,
 } from "@nextui-org/react";
-import API_ENPOINTS from "../API";
-import config from "../config";
-import { AxiosResponse } from "axios";
-import { toPng,toCanvas } from "html-to-image";
-import { jsPDF } from "jspdf";
-import {getLocalTimeZone, today} from "@internationalized/date";
-import {useDateFormatter} from "@react-aria/i18n";
-import { NextApiRequest, NextApiResponse } from 'next';
-import puppeteer from 'puppeteer';
+import { IconSearch, IconPlus, IconTrash, IconUser, IconPackage, IconShoppingCart, IconReceipt } from "@tabler/icons-react";
+import { customerService } from "@/lib/services/customers";
+import { productService } from "@/lib/services/products";
+import { invoiceService } from "@/lib/services/invoices";
+import { getLocalTimeZone, today } from "@internationalized/date";
 import { CalendarDate } from "@internationalized/date";
-
-interface Product {
-  id: number;
-  productName: string;
-  price: number;
-  quantity?: number;
-  discount?: number;
-  sku?: string;
-  isFree?: boolean; 
-}
+import { useDateFormatter } from "@react-aria/i18n";
 
 interface Customer {
+  id: string;
   code: string;
   name: string;
   email: string;
@@ -62,1063 +42,670 @@ interface Customer {
   status: number;
 }
 
+interface Product {
+  id: string;
+  sku: string;
+  name: string;
+  price: number;
+  quantity: number;
+  max_discount: number;
+  category_id: string;
+}
+
+interface CartItem {
+  productId: string;
+  sku: string;
+  productName: string;
+  price: number;
+  quantity: number;
+  discount: number;
+  isFree?: boolean;
+}
+
 export default function POSPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [productsDataSet, setProductsDataSet] = useState<any>([]);
-  const [productAutocompleteList, setProductAutocompleteList] = useState<any>([]);
-  const [invoiceItemsList, setInvoiceItemsList] = useState<any>([]);
-  const [cart, setCart] = useState<Product[]>([]);
+  const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [customerSearch, setCustomerSearch] = useState("");
+  const [productSearch, setProductSearch] = useState("");
+  const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
+  const [showProductDropdown, setShowProductDropdown] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [quantity, setQuantity] = useState<number>(0);
-  const [discount, setDiscount] = useState<number>(0);
-  const [paymentMethod, setPaymentMethod] = useState<string>("cash");
-  const [checkoutModalOpen, setCheckoutModalOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<Date | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [itemQty, setItemQty] = useState(1);
+  const [itemDiscount, setItemDiscount] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("cash");
   const [postDate, setPostDate] = useState(today(getLocalTimeZone()));
   const [dueDate, setDueDate] = useState(today(getLocalTimeZone()));
-  const [productName, setProductName] = useState<string>("");
-  const [sku, setSKU] = useState<string>("");
-  const [maxDiscount, setMaxDiscount] = useState<number>(0);
-  const [customerDataSet, setCustomerDataSet] = useState<any>([]);
-  const [customerName, setCustomerName] = useState<any>([]);
-  const [contactNumber, setContactNumber] = useState<any>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
-  const [customerEmail, setCustomerEmail] = useState<string>("");
-  const [maxQty, setMaxQty] = useState<number>(0);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const [search, setSearch] = useState<any>([]);
-  const [invoiceID, setInvoiceID] = useState<string>("");
-  let formatter = useDateFormatter({dateStyle: "full"});
+  const [loading, setLoading] = useState(false);
+  const [invoiceCode, setInvoiceCode] = useState("");
+  const invoiceRef = useRef<HTMLDivElement>(null);
+  const customerRef = useRef<HTMLDivElement>(null);
+  const productRef = useRef<HTMLDivElement>(null);
+  const formatter = useDateFormatter({ dateStyle: "medium" });
+
+  const { isOpen: isInvoiceOpen, onOpen: onInvoiceOpen, onClose: onInvoiceClose } = useDisclosure();
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [customers, products] = await Promise.all([
+          customerService.getAll(),
+          productService.getAll(),
+        ]);
+        setAllCustomers(customers as Customer[]);
+        setAllProducts((products as any[]).filter((p) => p.quantity > 0));
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (customerRef.current && !customerRef.current.contains(e.target as Node)) {
+        setShowCustomerDropdown(false);
+      }
+      if (productRef.current && !productRef.current.contains(e.target as Node)) {
+        setShowProductDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleCustomerSearch = (val: string) => {
+    setCustomerSearch(val);
+    setSelectedCustomer(null);
+    if (val.trim().length === 0) {
+      setFilteredCustomers([]);
+      setShowCustomerDropdown(false);
+      return;
+    }
+    const lower = val.toLowerCase();
+    const filtered = allCustomers.filter(
+      (c) =>
+        c.name.toLowerCase().includes(lower) ||
+        (c.contact && c.contact.toLowerCase().includes(lower)) ||
+        c.code.toLowerCase().includes(lower)
+    );
+    setFilteredCustomers(filtered);
+    setShowCustomerDropdown(true);
+  };
+
+  const handleSelectCustomer = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setCustomerSearch(customer.name);
+    setShowCustomerDropdown(false);
+    setFilteredCustomers([]);
+  };
+
+  const handleProductSearch = (val: string) => {
+    setProductSearch(val);
+    setSelectedProduct(null);
+    if (val.trim().length === 0) {
+      setFilteredProducts([]);
+      setShowProductDropdown(false);
+      return;
+    }
+    const lower = val.toLowerCase();
+    const filtered = allProducts.filter(
+      (p) =>
+        p.name.toLowerCase().includes(lower) ||
+        p.sku.toLowerCase().includes(lower)
+    );
+    setFilteredProducts(filtered);
+    setShowProductDropdown(true);
+  };
+
+  const handleSelectProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setProductSearch(`${product.sku} — ${product.name}`);
+    setShowProductDropdown(false);
+    setFilteredProducts([]);
+    setItemQty(1);
+    setItemDiscount(0);
+  };
 
   const handleAddToCart = () => {
     if (!selectedProduct) {
-        alert("Please select a product.");
-        return;
+      alert("Please select a product first.");
+      return;
+    }
+    if (itemQty <= 0) {
+      alert("Quantity must be greater than 0.");
+      return;
+    }
+    if (itemDiscount > selectedProduct.max_discount) {
+      alert(`Max discount for this product is ${selectedProduct.max_discount}%.`);
+      return;
     }
 
-    const existingProduct = cart.find((item) => item.sku === selectedProduct.sku);
-
-    if (discount > maxDiscount) {
-        alert(`Discount cannot exceed LKR ${maxDiscount}%`);
-        setDiscount(0);
-        return;
+    const alreadyInCart = cart.filter((i) => i.sku === selectedProduct.sku && !i.isFree);
+    const totalQtyInCart = alreadyInCart.reduce((sum, i) => sum + i.quantity, 0);
+    if (totalQtyInCart + itemQty > selectedProduct.quantity) {
+      alert(`Only ${selectedProduct.quantity} units available. Already ${totalQtyInCart} in cart.`);
+      return;
     }
 
-    if (quantity > maxQty) {
-        alert(`Quantity cannot exceed ${maxQty}`);
-        setQuantity(0);
-        return;
-    }
-
-    const totalQuantity = existingProduct
-        ? (existingProduct.quantity ?? 0) + quantity
-        : quantity;
-
-    if (totalQuantity > maxQty) {
-        alert(`Cannot add more than ${maxQty} of ${selectedProduct.productName}`);
-        return;
-    }
-
-    if (!productName || quantity <= 0) return;
-
-    const newCart = [...cart];
-    const itemIndex = newCart.findIndex((item) => item.sku === selectedProduct.sku);
-
-    if (itemIndex > -1) {
-        const item = newCart[itemIndex];
-        if (item) {
-            item.quantity = (item.quantity ?? 0) + quantity;
-        }
+    const newItems: CartItem[] = [];
+    const existingIndex = cart.findIndex((i) => i.sku === selectedProduct.sku && !i.isFree);
+    if (existingIndex > -1) {
+      const updated = [...cart];
+      updated[existingIndex].quantity += itemQty;
+      setCart(updated);
     } else {
-        newCart.push({
-            sku: selectedProduct.sku,
-            productName,
-            quantity,
-            price: selectedProduct.price,
-            discount,
-        } as Product & { isFree?: boolean });
+      newItems.push({
+        productId: selectedProduct.id,
+        sku: selectedProduct.sku,
+        productName: selectedProduct.name,
+        price: Number(selectedProduct.price),
+        quantity: itemQty,
+        discount: itemDiscount,
+      });
+      setCart((prev) => [...prev, ...newItems]);
     }
 
-    // **DHP Free Product Conditions**
-    if (productName === "DHP") {
-        let freeDHP = 0;
-        let freeLepto = 0;
-
-        if (quantity >= 200) {
-            freeDHP = 50;
-            freeLepto = 250;
-        } else if (quantity >= 150) {
-            freeDHP = 35;
-            freeLepto = 185;
-        } else if (quantity >= 100) {
-            freeDHP = 25;
-            freeLepto = 125;
-        } else if (quantity >= 50) {
-            freeDHP = 12;
-            freeLepto = 62;
-        }
-
-        if (freeDHP > 0) {
-            newCart.push({
-                sku: "DHP_FREE",
-                productName: "DHP (Free)",
-                quantity: freeDHP,
-                price: 0,
-                discount: 100,
-                isFree: true,
-            } as Product & { isFree: boolean });
-
-            newCart.push({
-                sku: "LEPTO_FREE",
-                productName: "Lepto (Free)",
-                quantity: freeLepto,
-                price: 0,
-                discount: 100,
-                isFree: true,
-            } as Product & { isFree: boolean });
-        }
-    }
-
-    // **Tri Cat Free Product Conditions (Updated)**
-    // if (productName === "Tri Cat") {
-    //     let freeTriCat = 0;
-
-    //     if (quantity >= 300) freeTriCat = 30;
-    //     else if (quantity >= 200) freeTriCat = 20;
-    //     else if (quantity >= 100) freeTriCat = 10;
-    //     else if (quantity >= 10) freeTriCat = 1;
-
-    //     if (freeTriCat > 0) {
-    //         newCart.push({
-    //             sku: "TRI_CAT_FREE",
-    //             productName: "Tri Cat (Free)",
-    //             quantity: freeTriCat,
-    //             price: 0,
-    //             discount: 100,
-    //             isFree: true,
-    //         } as Product & { isFree: boolean });
-    //     }
-    // }
-
-    if (productName === "Tri Cat") {
-      const freeTriCat = Math.floor(quantity / 10);
-  
-      if (freeTriCat > 0) {
-          newCart.push({
-              sku: "TRI_CAT_FREE",
-              productName: "Tri Cat (Free)",
-              quantity: freeTriCat,
-              price: 0,
-              discount: 100,
-              isFree: true,
-          } as Product & { isFree: boolean });
-      }
-  }
-  
-
-    // **Beranil Free Product Conditions**
-    // if (productName === "Beranil") {
-    //     let freeBeranil = 0;
-    //     if (quantity >= 100) freeBeranil = 10;
-    //     else if (quantity >= 10) freeBeranil = 1;
-
-    //     if (freeBeranil > 0) {
-    //         newCart.push({
-    //             sku: "BERANIL_FREE",
-    //             productName: "Beranil (Free)",
-    //             quantity: freeBeranil,
-    //             price: 0,
-    //             discount: 100,
-    //             isFree: true,
-    //         } as Product & { isFree: boolean });
-    //     }
-    // }
-
-    // **Beranil Free Product Conditions**
-    if (productName === "Beranil") {
-      const freeBeranil = Math.floor(quantity / 10);
-
-      if (freeBeranil > 0) {
-          newCart.push({
-              sku: "BERANIL_FREE",
-              productName: "Beranil (Free)",
-              quantity: freeBeranil,
-              price: 0,
-              discount: 100,
-              isFree: true,
-          } as Product & { isFree: boolean });
-      }
-    }
-
-
-    // **Avilin Free Product Conditions**
-    // if (productName === "Avilin") {
-    //     let freeAvilin = 0;
-    //     if (quantity >= 100) freeAvilin = 10;
-    //     else if (quantity >= 10) freeAvilin = 1;
-
-    //     if (freeAvilin > 0) {
-    //         newCart.push({
-    //             sku: "AVILIN_FREE",
-    //             productName: "Avilin (Free)",
-    //             quantity: freeAvilin,
-    //             price: 0,
-    //             discount: 100,
-    //             isFree: true,
-    //         } as Product & { isFree: boolean });
-    //     }
-    // }
-
-    // **Avilin Free Product Conditions**
-    if (productName === "Avilin") {
-      const freeAvilin = Math.floor(quantity / 10);
-
-      if (freeAvilin > 0) {
-          newCart.push({
-              sku: "AVILIN_FREE",
-              productName: "Avilin (Free)",
-              quantity: freeAvilin,
-              price: 0,
-              discount: 100,
-              isFree: true,
-          } as Product & { isFree: boolean });
-      }
-    }
-
-
-    // **Prednisolone Free Product Conditions**
-    // if (productName === "Prednisolone") {
-    //     let freePrednisolone = 0;
-    //     if (quantity >= 100) freePrednisolone = 10;
-    //     else if (quantity >= 10) freePrednisolone = 1;
-
-    //     if (freePrednisolone > 0) {
-    //         newCart.push({
-    //             sku: "PREDNISOLONE_FREE",
-    //             productName: "Prednisolone (Free)",
-    //             quantity: freePrednisolone,
-    //             price: 0,
-    //             discount: 100,
-    //             isFree: true,
-    //         } as Product & { isFree: boolean });
-    //     }
-    // }
-
-    // **Prednisolone Free Product Conditions**
-    if (productName === "Prednisolone") {
-      const freePrednisolone = Math.floor(quantity / 10);
-
-      if (freePrednisolone > 0) {
-          newCart.push({
-              sku: "PREDNISOLONE_FREE",
-              productName: "Prednisolone (Free)",
-              quantity: freePrednisolone,
-              price: 0,
-              discount: 100,
-              isFree: true,
-          } as Product & { isFree: boolean });
-      }
-    }
-
-
-    // **Parvo Free Product Conditions**
-    if (productName === "Parvo") {
-        let freeParvo = 0;
-        let freeDilund = 0;
-
-        if (quantity >= 200) {
-            freeParvo = 50;
-            freeDilund = 250;
-        } else if (quantity >= 150) {
-            freeParvo = 35;
-            freeDilund = 185;
-        } else if (quantity >= 100) {
-            freeParvo = 25;
-            freeDilund = 125;
-        } else if (quantity >= 50) {
-            freeParvo = 12;
-            freeDilund = 62;
-        }
-
-        if (freeParvo > 0) {
-            newCart.push({
-                sku: "PARVO_FREE",
-                productName: "Parvo (Free)",
-                quantity: freeParvo,
-                price: 0,
-                discount: 100,
-                isFree: true,
-            } as Product & { isFree: boolean });
-
-            newCart.push({
-                sku: "DILUND_FREE",
-                productName: "Dilund (Free)",
-                quantity: freeDilund,
-                price: 0,
-                discount: 100,
-                isFree: true,
-            } as Product & { isFree: boolean });
-        }
-    }
-
-    // **Puppy DP Free Product Conditions**
-    if (productName === "Puppy DP") {
-        newCart.push({
-            sku: "DILUND_FREE",
-            productName: "Dilund (Free)",
-            quantity: quantity, // Same count as Puppy DP
-            price: 0,
-            discount: 100,
-            isFree: true,
-        } as Product & { isFree: boolean });
-    }
-
-    setCart(newCart);
-    setQuantity(0);
     setSelectedProduct(null);
-    setProductName("");
-    setSKU("");
-    setDiscount(0);
-};
-
+    setProductSearch("");
+    setItemQty(1);
+    setItemDiscount(0);
+  };
 
   const handleRemoveFromCart = (index: number) => {
     setCart((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Example of a mock function for inventory update
-const updateInventory = async (items: Product[]) => {
-  // Placeholder for actual inventory update logic.
-  console.log("Updating inventory with the following items:", items);
-  // Simulate a delay for inventory update (e.g., network request)
-  return new Promise((resolve) => setTimeout(resolve, 1000));
-};
+  const netTotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalDiscount = cart.reduce(
+    (acc, item) => acc + (item.price * item.quantity * item.discount) / 100,
+    0
+  );
+  const grandTotal = netTotal - totalDiscount;
 
-const handleCheckout = async () => {
-  const isConfirmed = window.confirm("Are you sure you want to proceed with checkout?");
-  
-  if (isConfirmed) {
-    // Filter out free items (those with isFree: true) from the cart
-    const regularItems = cart.filter((item) => !item.isFree);
-
-    try {
-      // Call the updateInventory function with the filtered items (excluding free items)
-      await updateInventory(regularItems);
-
-      // Proceed with confirming checkout, show the invoice modal, or finalize the order
-      handleConfirmCheckout();  // Continue with your confirmation flow
-      setCheckoutModalOpen(true); // Show the invoice modal (if needed)
-      
-    } catch (error) {
-      alert('Failed to update inventory. Please try again.');
-    }
-  }
-};
-
-  
-  
-  const handleCheckoutClose = () => {
-    
-
-    setCheckoutModalOpen(false);
-    setContactNumber("");
-    setCustomerName("");
-    setCart([]);
-    setSearch("");
-    setSelectedProduct(null);
-
-  };
-
-  const handleConfirmCheckout = async () => {
-    let response: AxiosResponse<any, any>;
-    try {
-      console.log(cart);
-      console.log(selectedCustomer);
-      const updatePayload = cart.map((item) => ({
-        sku: item.sku,
-        quantity: item.quantity,
-      }));
-
-      console.log(updatePayload);
-      response = await axios.put(API_ENPOINTS.UPDATE_INVENTORY, { products: updatePayload });
-
-      alert("Checkout confirmed. Inventory updated successfully.");
-      const response_ =await saveInvoiceToDB(); 
-      console.log(response_);
-
-     
-      setCheckoutModalOpen(true);
-      
-    } catch (error: unknown) {
-      // const axiosError = error as AxiosError;
-      if (error instanceof AxiosError) {
-        console.error("Error response:", error.response?.data.message);
-        alert("Failed to update inventory. Please try again. " + error.response?.data.message);
-      } else {
-        console.error("An unexpected error occurred:", error);
-        alert("An unexpected error occurred. Please try again.");
-      }
-    }
-  };
-
-  const handleProductSelect = (sku: string) => {
-    sku = sku.split(' ')[0];
-    const product = productsDataSet.find((p :any) => p.sku === sku);
-    console.log(productsDataSet)
-    if (product) {
-      setSelectedProduct(product);
-      setProductName(product.productName);
-      setSKU(product.sku);
-      setMaxQty(product.intQty);
-      setMaxDiscount(product.maxDiscount)
-    }
-  };
-
-  const handleCustomerSelect = (contact: string) => {
-    let contact_s =contact.split(" ")[0]
-    const customer = customerDataSet.find((p: any) => p.contact === contact_s);
-    if (customer) {
-      setSelectedCustomer(customer);
-      setCustomerName(customer.name);
-      setContactNumber(customer.contact);
-    }
-  };
-
-  // const handleDiscountChange = (val: number | undefined) => {
-  //   const product = productsDataSet.find((p : any) => p.sku === sku);
-  //   if (product) {
-  //     setMaxDiscount(product.maxDiscount);
-  //     if (val !== undefined) {
-  //       if (val > maxDiscount) {
-  //         alert(`Discount cannot exceed LKR ${maxDiscount}%`);
-  //         setDiscount(0);
-  //         return;
-  //       } else {
-  //         setDiscount(val);
-  //       }
-  //     } else {
-  //       setDiscount(0);
-  //     }
-  //   }
-  // };
-
-  // const handleQtyChange = (val: number | undefined) => {
-  //   console.log(val)
-  //   const product = productsDataSet.find((p : any) => p.sku === sku);
-  //   console.log(product)
-  //   if (product) {
-  //     setMaxQty(product.intQty);
-  //     if (val !== undefined) {
-  //       if (val > maxQty) {
-  //         alert(`Quantity cannot exceed ${maxQty}`);
-  //         setQuantity(0);
-  //       } else {
-  //         setQuantity(val);
-  //       }
-  //     } else {
-  //       setQuantity(0);
-  //     }
-  //   }
-  // };
-
-  const calculateDiscountedPrice = (price: number, discount: number): number => {
-    return price - price * (discount / 100);
-  };
-  
-  const netTotal = cart
-    .reduce((acc, item) => acc + (item.price ?? 0) * (item.quantity ?? 0), 0)
-    .toFixed(2);
-  
-  const cartTotal = cart
-    .reduce(
-      (acc, item) =>
-        acc + calculateDiscountedPrice(item.price ?? 0, item.discount ?? 0) * (item.quantity ?? 0),
-      0
-    )
-    .toFixed(2);
-  
-  // Convert netTotal and cartTotal to numbers for accurate calculations
-  const Totaldiscount = (parseFloat(netTotal) - parseFloat(cartTotal)).toFixed(2);
-
-  console.log(`Net Total: LKR ${netTotal}`);
-  console.log(`Cart Total: LKR ${cartTotal}`);
-  console.log(`Total Discount: LKR ${Totaldiscount}`);
-
-
-  const loadProducts = async () => {
-    try {
-      const response = await axios.get(API_ENPOINTS.GET_PRODUCTS);
-      const products = response.data;
-
-      const availableProducts = products.filter((product: any) => product.intQty > 0);
-
-      setProductsDataSet(products);
-      const autocompleteList = availableProducts.map((element: any) => `${element.sku} ${element.productName}`);
-      
-      setProductAutocompleteList(autocompleteList);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const loadCustomer = async () => {
-    try {
-      const response = await axios.get(API_ENPOINTS.GET_CUSTOMERS);
-      const customer = response.data;
-      setCustomerDataSet(customer);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const saveCheckoutAsPNG = async () => {
-    if (!modalRef.current) {
-      alert("Modal content not available for rendering.");
-      return;
-    }
-    try {
-      const dataUrl = await toPng(modalRef.current);
-      const link = document.createElement("a");
-      link.download = invoiceID+".png";
-      link.href = dataUrl;
-      link.click();
-    } catch (error) {
-      console.error("Error capturing modal as PNG:", error);
-      alert("Failed to save as PNG.");
-    }
-  };
-
-  // const sendEmail = (event: React.FormEvent) => {
-  //   event.preventDefault();
-
-  //   const templateParams = {
-  //     to_name: customerName,
-  //     from_name: "Your Business Name",
-  //     message: `Thank you for your order! Here is your order summary: Total:  LKR ${cartTotal}`,
-  //     email: customerEmail,
-  //   };
-
-  //   emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_USER_ID')
-  //     .then((response) => {
-  //       console.log('Email sent successfully!', response.status, response.text);
-  //       alert("Email sent successfully!");
-  //     }, (error) => {
-  //       console.log('Failed to send email:', error);
-  //       alert("Failed to send email.");
-  //     });
-  // };
-
-  // const generatePDF = async () => {
-  //   if (!modalRef.current) return alert("No content to render.");
-
-  //   try {
-  //     const dataUrl = await toPng(modalRef.current);
-  //     console.log(dataUrl)
-  //     const pdf = new jsPDF();
-  //     pdf.addImage(dataUrl, "PNG", 0, 0, 210, 297);
-  //     pdf.save(invoiceID +".pdf");
-  //   } catch (error) {
-  //     console.error("Error generating PDF:", error);
-  //     alert("Failed to generate PDF.");
-  //   }
-  // };
-
-  const generatePDF = async () => {
-    if (typeof window === 'undefined') return; // Client-side check
-    const html2pdf = require('html2pdf.js'); // Require only in browser
-  
-    // Ensure the element exists in the DOM
-    const element = document.getElementById('print-content');
-    
-    // Check if the element is found
-    if (!element) {
-      alert("Element with id 'print-content' not found.");
-      return;
-    }
-  
-    // Set options for the PDF generation
-    const opt = {
-      margin: 0.5,
-      filename: 'invoice.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-  
-    // Ensure the html2pdf is correctly set up to generate the PDF from the element
-    try {
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-    }
-  };
-    
-  const saveInvoiceToDB = async () => {
-    // Ensure all necessary details are available
+  const handleCheckout = async () => {
     if (!selectedCustomer) {
       alert("Please select a customer.");
       return;
     }
-  
     if (cart.length === 0) {
-      alert("Cart is empty. Please add products to the cart.");
+      alert("Cart is empty.");
       return;
     }
-  
-    // Prepare the invoice payload
-    const invoicePayload = {
-      customer: {
-        code:selectedCustomer.code,
-        name: selectedCustomer.name,
-        contact: selectedCustomer.contact,
-        email: customerEmail,
-        address: selectedCustomer.address,
-        city: selectedCustomer.city,
-        country: selectedCustomer.country,
-      },
-      invoice: {
-        postDate: postDate.toString(),
-        dueDate: dueDate.toString(),
-        paymentMethod:paymentMethod,
-        totalAmount: parseFloat(cartTotal),
-        discountAmount: Totaldiscount,
-        netTotal: parseFloat(netTotal),
-      },
-      cartItems: cart.map((item) => ({
-        sku: item.sku,
-        name: item.productName,
-        quantity: item.quantity,
-        price: item.price,
-        discount: item.discount || 0,
-      })),
-    };
-  
+    if (!window.confirm("Confirm checkout?")) return;
+
+    setLoading(true);
     try {
-      // Replace `API_ENDPOINTS.SAVE_INVOICE` with your actual API endpoint
-      console.log(invoicePayload)
-      const response = await axios.post(API_ENPOINTS.SAVE_INVOICE, invoicePayload);
-  
-      alert("Invoice saved successfully!");
-      console.log("Invoice Response:", response.data);
-      setInvoiceID(response.data.invoiceCode)
-  
-     
-    } catch (error) {
-      console.error("Error saving invoice:", error);
-      alert("Failed to save invoice. Please try again.");
+      const invoice = await invoiceService.create({
+        customer_id: selectedCustomer.id,
+        post_date: postDate.toString(),
+        due_date: dueDate.toString(),
+        payment_method: paymentMethod,
+        total_amount: netTotal,
+        discount_amount: totalDiscount,
+        net_total: grandTotal,
+        items: cart.map((item) => ({
+          product_id: item.productId,
+          sku: item.sku,
+          product_name: item.productName,
+          quantity: item.quantity,
+          price: item.price,
+          discount: item.discount,
+          is_free: item.isFree || false,
+        })),
+      });
+      setInvoiceCode(invoice.invoice_code);
+      const updatedProducts = await productService.getAll();
+      setAllProducts((updatedProducts as any[]).filter((p) => p.quantity > 0));
+      onInvoiceOpen();
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      alert("Checkout failed: " + (error.message || "Unknown error"));
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handlePaymentMethodChange = (e :any ) => {
-    setPaymentMethod(e.target.value);
+  const handleCloseInvoice = () => {
+    onInvoiceClose();
+    setCart([]);
+    setSelectedCustomer(null);
+    setCustomerSearch("");
+    setProductSearch("");
+    setSelectedProduct(null);
+    setInvoiceCode("");
   };
 
-
-  useEffect(() => {
-    loadProducts();
-    loadCustomer();
-    // const today = new Date();
-    // setPostDate(today);
-    // setDueDate(today);
-  }, []);
-
-
-  
-  const renderInvoiceTemplate = () => {
-    const rows = cart.map((item) => {
-      const itemWithFree = item as Product & { isFree?: boolean };
-  
-      return `
-        <tr ${itemWithFree.isFree ? 'style="color: green; font-weight: bold;"' : ""}>
-          <td>${itemWithFree.quantity}</td>
-          <td>${itemWithFree.productName}</td>
-          <td>${itemWithFree.isFree ? "Free" : itemWithFree.discount + "%"}</td>
-          <td>${itemWithFree.isFree ? "0.00" : itemWithFree.price.toFixed(2)}</td>
-          <td>${itemWithFree.isFree ? "0.00" : (calculateDiscountedPrice(itemWithFree.price, itemWithFree.discount || 0) * (itemWithFree.quantity || 0)).toFixed(2)}</td>
-        </tr>
-      `;
-    });
-  
-    // Add 8 empty rows
-    const emptyRows = Array(8).fill(`
-      <tr>
-        <td>&nbsp;</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    `);
-  
-    return `
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: #fff;
-        }
-  
-        .invoice-container {
-          width: 95%;
-          margin: 20px auto;
-          padding: 10px;
-          border: 1px solid #000;
-        }
-  
-        .header {
-          text-align: center;
-          font-size: 22px;
-          font-weight: bold;
-          margin-bottom: 5px;
-          text-transform: uppercase;
-        }
-  
-        .contact-info {
-          text-align: center;
-          font-size: 12px;
-          margin-bottom: 15px;
-        }
-  
-        .top-details {
-          display: flex;
-          justify-content: space-between;
-          font-size: 12px;
-          margin-bottom: 10px;
-        }
-  
-        .top-details div {
-          width: 48%;
-        }
-  
-        .supplier, .customer {
-          font-size: 12px;
-          border: 1px solid #000;
-          padding: 8px;
-          margin-bottom: 10px;
-        }
-  
-        .details table {
-          width: 100%;
-          border-collapse: collapse;
-          font-size: 12px;
-        }
-  
-        .details th, .details td {
-          border: 1px solid #000;
-          padding: 6px;
-          text-align: left;
-        }
-  
-        .details th {
-          background-color: #e0e0e0;
-          text-transform: uppercase;
-        }
-  
-        .totals {
-          margin-top: 10px;
-          font-size: 12px;
-          text-align: right;
-        }
-  
-        .totals p {
-          margin: 4px 0;
-        }
-  
-        .footer {
-          margin-top: 30px;
-          font-size: 12px;
-          border-top: 1px solid #000;
-          padding-top: 10px;
-        }
-  
-        .signature {
-          margin-top: 30px;
-          display: flex;
-          justify-content: space-between;
-          font-size: 12px;
-        }
-  
-        .signature p {
-          margin: 0;
-        }
-      </style>
-  
-      <div id="print-content" class="invoice-container">
-        <div class="header">Anuradha Transport Services</div>
-        <div class="contact-info">
-          No.219, Nawana, Mirigama <br />
-          Tel: 0777 898 929 / 0727 898 929 / 0770 584 959
-        </div>
-  
-        <div class="top-details">
-          <div><strong>Invoice No:</strong> ${invoiceID}</div>
-          <div><strong>Date:</strong> ${postDate ? formatter.format(postDate.toDate(getLocalTimeZone())) : "--"}</div>
-        </div>
-  
-        <div class="supplier">
-          <strong>Brown & Company PLC - Pharmaceuticals Division</strong><br />
-          34, Sir Mohamed Macan Marker Mawatha, Colombo 03<br />
-          Tel: 011 266 3000
-        </div>
-  
-        <div class="customer">
-          <strong>Customer Name:</strong> ${customerName}<br />
-          <strong>Address:</strong> ${selectedCustomer?.address || "N/A"}<br />
-          <strong>Contact No:</strong> ${contactNumber}
-        </div>
-  
-        <div class="details">
-          <table>
-            <thead>
-              <tr>
-                <th>Qty</th>
-                <th>Description</th>
-                <th>Discount</th>
-                <th>Unit Price (LKR)</th>
-                <th>Amount (LKR)</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows.join("")}
-              ${emptyRows.join("")}
-              <tr>
-                <td colspan="3" style="border: none;"></td>
-                <td><strong>Sub Total</strong></td>
-                <td>LKR ${Number(cartTotal).toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colspan="3" style="border: none;"></td>
-                <td><strong>Discount</strong></td>
-                <td>LKR ${Number(Totaldiscount).toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colspan="3" style="border: none;"></td>
-                <td><strong>Grand Total</strong></td>
-                <td><strong>LKR ${Number(netTotal).toFixed(2)}</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <div class="footer">
-          PLEASE DRAW THE CHEQUE IN FAVOUR OF ANURADHA TRANSPORT SERVICES
-        </div>
-  
-        <div class="signature">
-          <p>Checked By: ________________________</p>
-          <p>Goods Received By Customer</p>
-        </div>
-      </div>
-    `;
+  const generatePDF = async () => {
+    if (typeof window === "undefined") return;
+    const html2pdf = require("html2pdf.js");
+    const element = document.getElementById("invoice-print");
+    if (!element) return;
+    await html2pdf()
+      .set({
+        margin: 0.5,
+        filename: `${invoiceCode}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      })
+      .from(element)
+      .save();
   };
-  
-
-  function parseZonedDateTime(arg0: string): any {
-    throw new Error("Function not implemented.");
-  }
 
   return (
-    <>
-      <div className="bg-gray-100 w-screen h-screen py-12 overflow-auto" >
-        <div className="mx-auto w-11/12 max-w-7xl bg-white border-0 shadow-lg sm:rounded-3xl px-4 py-6">
-          <label className="text-2xl font-bold mb-6 block text-center">POS System</label>
-  
-          {/* Main Layout: Responsive Flex */}
-          <div className="flex flex-col lg:flex-row gap-8">
-  
-            {/* Left Section: Customer and Product Information */}
-            <div className="flex-1 space-y-6">
-  
-              {/* Customer Information Section */}
-              <Card shadow="sm" className="flex flex-col gap-4 p-4">
-                <label className="text-lg font-semibold">Search</label>
-                <Autocomplete
-                  aria-label="customer-search"
-                  className="w-full"
-                  items={customerDataSet.map((customer :any) => `${customer.contact} ${customer.name}`)}
-                  value={search}
-                  onInputChange={(val) => {
-                    setSearch(val);
-                    handleCustomerSelect(val);
-                  }}
-                  placeholder="Customer Name or Contact Number"
-                >
-                  {customerDataSet.map((customer : any, index :any) => (
-                    <AutocompleteItem key={index} value={`${customer.contact} ${customer.name}`}>
-                      {`${customer.contact} ${customer.name}`}
-                    </AutocompleteItem>
-                  ))}
-                </Autocomplete>
+    <div style={{ minHeight: "100vh", background: "#f4f5f7", padding: "24px" }}>
+      <div style={{ maxWidth: 1400, margin: "0 auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+          <IconShoppingCart size={28} color="#2563eb" />
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: "#1e293b" }}>Point of Sale</h1>
+        </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="flex flex-col">
-                    <h5>Customer Name</h5>
-                    <Input value={customerName} readOnly />
-                  </div>
-                  <div className="flex flex-col">
-                    <h5>Contact Number</h5>
-                    <Input value={contactNumber} readOnly />
-                  </div>
-                  <div className="flex flex-col">
-                    <h5>Post Date</h5>
-                    <DatePicker
-                      value={postDate}
-                      onChange={(date: CalendarDate | null) => date && setPostDate(date)}
-                      label="Select date"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h5>Due Date</h5>
-                    <DatePicker
-                      value={dueDate}
-                      onChange={(date: CalendarDate | null) => date && setDueDate(date)}
-                      label="Select date"
-                    />
-                  </div>
-                </div>
+        <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
+          {/* Left: Main POS panel */}
+          <div style={{ flex: 1, minWidth: 600, display: "flex", flexDirection: "column", gap: 20 }}>
 
-              </Card>
-  
-              {/* Product and Cart Section */}
-              <Card shadow="sm" className="flex flex-col gap-4 p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="flex flex-col">
-                    <h5>SKU</h5>
-                    <Autocomplete
-                     
-                      items={productAutocompleteList}
-                      onInputChange={handleProductSelect}
-                    >
-                      {productAutocompleteList.map((item :any, index: any) => (
-                        <AutocompleteItem key={index} value={item}>
-                          {item}
-                        </AutocompleteItem>
-                      ))}
-                    </Autocomplete>
-                  </div>
-                  <div className="flex flex-col">
-                    <h5>Product Name</h5>
-                    <Input value={productName} readOnly />
-                  </div>
-                  <div className="flex flex-col">
-                    <h5>Quantity</h5>
-                    <Input
-                      type="number"
-                      value={quantity.toString()}
-                      onChange={(e) => {
-                        // handleQtyChange(Number(e.target.value));
-                        setQuantity(Number(e.target.value));
-                      }}
-                      min={0}
-                      max={maxQty}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h5>Discount</h5>
-                    <Input type="number" value={discount.toString()} onChange={(e) => 
-                    {
+            {/* Customer section */}
+            <div style={{ background: "#fff", borderRadius: 16, padding: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.07)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                <IconUser size={18} color="#2563eb" />
+                <span style={{ fontWeight: 600, fontSize: 15, color: "#1e293b" }}>Customer</span>
+              </div>
 
-                      // handleDiscountChange(Number(e.target.value));
-                      setDiscount(Number(e.target.value))
-                    }
-                    } min={0}
-                    max={maxDiscount} />
+              <div ref={customerRef} style={{ position: "relative" }}>
+                <Input
+                  placeholder="Search by name, phone, or code..."
+                  value={customerSearch}
+                  onChange={(e) => handleCustomerSearch(e.target.value)}
+                  onFocus={() => customerSearch && setShowCustomerDropdown(true)}
+                  startContent={<IconSearch size={16} color="#94a3b8" />}
+                  size="sm"
+                />
+                {showCustomerDropdown && filteredCustomers.length > 0 && (
+                  <div style={{
+                    position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
+                    background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10,
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)", maxHeight: 240, overflowY: "auto", marginTop: 4
+                  }}>
+                    {filteredCustomers.map((customer) => (
+                      <div
+                        key={customer.id}
+                        onClick={() => handleSelectCustomer(customer)}
+                        style={{
+                          padding: "10px 14px", cursor: "pointer", borderBottom: "1px solid #f1f5f9",
+                          transition: "background 0.15s"
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f7ff")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+                      >
+                        <div style={{ fontWeight: 600, fontSize: 14, color: "#1e293b" }}>{customer.name}</div>
+                        <div style={{ fontSize: 12, color: "#64748b" }}>{customer.contact} &bull; {customer.code}</div>
+                      </div>
+                    ))}
                   </div>
+                )}
+                {showCustomerDropdown && filteredCustomers.length === 0 && customerSearch.length > 0 && (
+                  <div style={{
+                    position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
+                    background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10,
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)", padding: "12px 14px", marginTop: 4,
+                    color: "#64748b", fontSize: 13
+                  }}>
+                    No customers found
+                  </div>
+                )}
+              </div>
+
+              {selectedCustomer && (
+                <div style={{
+                  marginTop: 14, background: "#f0f7ff", borderRadius: 10, padding: "12px 16px",
+                  border: "1px solid #bfdbfe", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 24px"
+                }}>
+                  <div><span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600 }}>Name</span><div style={{ fontSize: 14, fontWeight: 600, color: "#1e293b" }}>{selectedCustomer.name}</div></div>
+                  <div><span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600 }}>Contact</span><div style={{ fontSize: 14, color: "#1e293b" }}>{selectedCustomer.contact}</div></div>
+                  <div><span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600 }}>Email</span><div style={{ fontSize: 14, color: "#1e293b" }}>{selectedCustomer.email || "—"}</div></div>
+                  <div><span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600 }}>City</span><div style={{ fontSize: 14, color: "#1e293b" }}>{selectedCustomer.city || "—"}</div></div>
+                  <div style={{ gridColumn: "span 2" }}><span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", fontWeight: 600 }}>Address</span><div style={{ fontSize: 14, color: "#1e293b" }}>{selectedCustomer.address || "—"}</div></div>
                 </div>
-  
-                <Button color="secondary" onClick={handleAddToCart} className="w-full">
-                  Add to Cart
-                </Button>
-  
-                {/* Cart Table */}
-                <div className="overflow-x-auto">
-                  <Table aria-label="Cart Table">
-                    <TableHeader>
-                      <TableColumn>SKU</TableColumn>
-                      <TableColumn>Product</TableColumn>
-                      <TableColumn>Quantity</TableColumn>
-                      <TableColumn>Discount</TableColumn>
-                      <TableColumn>Price</TableColumn>
-                      <TableColumn>Discounted Price</TableColumn>
-                      <TableColumn>Actions</TableColumn>
-                    </TableHeader>
-                    <TableBody>
-                      {cart.map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{item.sku}</TableCell>
-                          <TableCell>{item.productName}</TableCell>
-                          <TableCell>{item.quantity}</TableCell>
-                          <TableCell>{item.discount}%</TableCell>
-                          <TableCell>LKR {item.price.toFixed(2)}</TableCell>
-                          <TableCell>
-                            LKR {((item.price ?? 0) * (1 - (item.discount ?? 0) / 100) * (item.quantity ?? 0)).toFixed(2)}
-                          </TableCell>
-                          <TableCell>
-                            <Button variant="light" color="danger" onClick={() => handleRemoveFromCart(index)}>
-                              Remove
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </Card>
-            </div>
-  
-            {/* Right Section: Cart Summary */}
-            <div className="w-full lg:w-1/3">
-              <Card shadow="sm" className="flex flex-col gap-4 p-4">
-                <h5 className="font-bold text-lg">Cart Summary</h5>
-                {cart.length === 0 && <h4>No items in cart</h4>}
+              )}
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 14 }}>
                 <div>
-                <div className="grid grid-cols-2 gap-4 text-left py-4">
-  <h4 className="font-bold">Total:</h4>
-  <h4 > LKR {Number(netTotal).toFixed(2)}</h4>
-  <h4 className="font-bold">Discount:</h4>
-  <h4 >LKR {Number(Totaldiscount).toFixed(2)}</h4>
-  <h4 className="font-bold">Net Total: </h4>
-  <h4>LKR {Number(cartTotal).toFixed(2)}</h4>
-</div>
-                  <Select
-                    label="Payment Method"
-                    selectedKeys={[paymentMethod]}
-                    onChange={handlePaymentMethodChange}
-                  >
-                    <SelectItem key="cash">Cash</SelectItem>
-                    <SelectItem key="card">Card</SelectItem>
-                    <SelectItem key="online">Online</SelectItem>
-                  </Select>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 4 }}>Post Date</div>
+                  <DatePicker
+                    value={postDate}
+                    onChange={(date: CalendarDate | null) => date && setPostDate(date)}
+                    size="sm"
+                  />
                 </div>
-                <Button onClick={handleCheckout} color="secondary" className="w-full">
-                  Checkout
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 4 }}>Due Date</div>
+                  <DatePicker
+                    value={dueDate}
+                    onChange={(date: CalendarDate | null) => date && setDueDate(date)}
+                    size="sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Product add section */}
+            <div style={{ background: "#fff", borderRadius: 16, padding: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.07)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                <IconPackage size={18} color="#2563eb" />
+                <span style={{ fontWeight: 600, fontSize: 15, color: "#1e293b" }}>Add Product</span>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr auto", gap: 12, alignItems: "flex-end" }}>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 4 }}>Search Product</div>
+                  <div ref={productRef} style={{ position: "relative" }}>
+                    <Input
+                      placeholder="Search by name or SKU..."
+                      value={productSearch}
+                      onChange={(e) => handleProductSearch(e.target.value)}
+                      onFocus={() => productSearch && !selectedProduct && setShowProductDropdown(true)}
+                      startContent={<IconSearch size={16} color="#94a3b8" />}
+                      size="sm"
+                    />
+                    {showProductDropdown && filteredProducts.length > 0 && (
+                      <div style={{
+                        position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
+                        background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10,
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.12)", maxHeight: 260, overflowY: "auto", marginTop: 4
+                      }}>
+                        {filteredProducts.map((product) => (
+                          <div
+                            key={product.id}
+                            onClick={() => handleSelectProduct(product)}
+                            style={{
+                              padding: "10px 14px", cursor: "pointer", borderBottom: "1px solid #f1f5f9",
+                              transition: "background 0.15s"
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f7ff")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+                          >
+                            <div style={{ fontWeight: 600, fontSize: 14, color: "#1e293b" }}>{product.name}</div>
+                            <div style={{ fontSize: 12, color: "#64748b", display: "flex", gap: 12 }}>
+                              <span>SKU: {product.sku}</span>
+                              <span style={{ color: "#16a34a" }}>In Stock: {product.quantity}</span>
+                              <span style={{ color: "#2563eb" }}>LKR {Number(product.price).toFixed(2)}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {showProductDropdown && filteredProducts.length === 0 && productSearch.length > 0 && (
+                      <div style={{
+                        position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
+                        background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10,
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.12)", padding: "12px 14px", marginTop: 4,
+                        color: "#64748b", fontSize: 13
+                      }}>
+                        No products found
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 4 }}>
+                    Qty {selectedProduct ? <span style={{ color: "#64748b" }}>(max {selectedProduct.quantity})</span> : ""}
+                  </div>
+                  <Input
+                    type="number"
+                    value={itemQty.toString()}
+                    onChange={(e) => setItemQty(Math.max(1, parseInt(e.target.value) || 1))}
+                    min={1}
+                    max={selectedProduct?.quantity}
+                    size="sm"
+                  />
+                </div>
+
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 4 }}>
+                    Discount% {selectedProduct ? <span style={{ color: "#64748b" }}>(max {selectedProduct.max_discount}%)</span> : ""}
+                  </div>
+                  <Input
+                    type="number"
+                    value={itemDiscount.toString()}
+                    onChange={(e) => setItemDiscount(Math.max(0, parseInt(e.target.value) || 0))}
+                    min={0}
+                    max={selectedProduct?.max_discount || 0}
+                    size="sm"
+                  />
+                </div>
+
+                <Button
+                  color="primary"
+                  onPress={handleAddToCart}
+                  style={{ height: 36 }}
+                  startContent={<IconPlus size={16} />}
+                >
+                  Add
                 </Button>
-              </Card>
+              </div>
+
+              {selectedProduct && (
+                <div style={{
+                  marginTop: 12, background: "#f0fdf4", borderRadius: 8, padding: "8px 14px",
+                  border: "1px solid #bbf7d0", display: "flex", gap: 24, fontSize: 13
+                }}>
+                  <span><strong>Price:</strong> LKR {Number(selectedProduct.price).toFixed(2)}</span>
+                  <span><strong>In Stock:</strong> {selectedProduct.quantity}</span>
+                  <span><strong>Max Discount:</strong> {selectedProduct.max_discount}%</span>
+                  {itemQty > 0 && (
+                    <span style={{ color: "#2563eb" }}>
+                      <strong>Line Total:</strong> LKR {(Number(selectedProduct.price) * itemQty * (1 - itemDiscount / 100)).toFixed(2)}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Cart */}
+            <div style={{ background: "#fff", borderRadius: 16, padding: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.07)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                <IconShoppingCart size={18} color="#2563eb" />
+                <span style={{ fontWeight: 600, fontSize: 15, color: "#1e293b" }}>Cart</span>
+                {cart.length > 0 && (
+                  <Chip size="sm" color="primary" variant="flat">{cart.length} item{cart.length > 1 ? "s" : ""}</Chip>
+                )}
+              </div>
+
+              {cart.length === 0 ? (
+                <div style={{ textAlign: "center", color: "#94a3b8", padding: "32px 0", fontSize: 14 }}>
+                  No items added yet. Search and add products above.
+                </div>
+              ) : (
+                <Table aria-label="Cart" removeWrapper>
+                  <TableHeader>
+                    <TableColumn>SKU</TableColumn>
+                    <TableColumn>Product</TableColumn>
+                    <TableColumn>Qty</TableColumn>
+                    <TableColumn>Unit Price</TableColumn>
+                    <TableColumn>Discount</TableColumn>
+                    <TableColumn>Total</TableColumn>
+                    <TableColumn> </TableColumn>
+                  </TableHeader>
+                  <TableBody>
+                    {cart.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell style={{ fontSize: 13 }}>{item.sku}</TableCell>
+                        <TableCell style={{ fontSize: 13, fontWeight: 500 }}>{item.productName}</TableCell>
+                        <TableCell style={{ fontSize: 13 }}>{item.quantity}</TableCell>
+                        <TableCell style={{ fontSize: 13 }}>LKR {item.price.toFixed(2)}</TableCell>
+                        <TableCell style={{ fontSize: 13 }}>{item.discount}%</TableCell>
+                        <TableCell style={{ fontSize: 13, fontWeight: 600, color: "#2563eb" }}>
+                          LKR {(item.price * item.quantity * (1 - item.discount / 100)).toFixed(2)}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            variant="light"
+                            color="danger"
+                            onPress={() => handleRemoveFromCart(index)}
+                          >
+                            <IconTrash size={15} />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Summary & Checkout */}
+          <div style={{ width: 300, minWidth: 280 }}>
+            <div style={{
+              background: "#fff", borderRadius: 16, padding: 20,
+              boxShadow: "0 1px 4px rgba(0,0,0,0.07)", position: "sticky", top: 24
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
+                <IconReceipt size={18} color="#2563eb" />
+                <span style={{ fontWeight: 700, fontSize: 16, color: "#1e293b" }}>Order Summary</span>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, color: "#475569" }}>
+                  <span>Subtotal</span>
+                  <span>LKR {netTotal.toFixed(2)}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, color: "#dc2626" }}>
+                  <span>Discount</span>
+                  <span>- LKR {totalDiscount.toFixed(2)}</span>
+                </div>
+                <div style={{ borderTop: "2px solid #e2e8f0", paddingTop: 10, display: "flex", justifyContent: "space-between", fontSize: 16, fontWeight: 700, color: "#1e293b" }}>
+                  <span>Grand Total</span>
+                  <span>LKR {grandTotal.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 6 }}>Payment Method</div>
+                <Select
+                  selectedKeys={[paymentMethod]}
+                  onSelectionChange={(keys) => setPaymentMethod(Array.from(keys)[0] as string)}
+                  size="sm"
+                >
+                  <SelectItem key="cash">Cash</SelectItem>
+                  <SelectItem key="card">Card</SelectItem>
+                  <SelectItem key="online">Online Transfer</SelectItem>
+                  <SelectItem key="cheque">Cheque</SelectItem>
+                </Select>
+              </div>
+
+              {!selectedCustomer && (
+                <div style={{ fontSize: 12, color: "#f59e0b", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 8, padding: "8px 12px", marginBottom: 12 }}>
+                  Select a customer to proceed
+                </div>
+              )}
+              {cart.length === 0 && (
+                <div style={{ fontSize: 12, color: "#64748b", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 8, padding: "8px 12px", marginBottom: 12 }}>
+                  Add items to cart to proceed
+                </div>
+              )}
+
+              <Button
+                color="primary"
+                fullWidth
+                size="lg"
+                isDisabled={!selectedCustomer || cart.length === 0 || loading}
+                isLoading={loading}
+                onPress={handleCheckout}
+                style={{ fontWeight: 600 }}
+              >
+                {loading ? "Processing..." : "Checkout"}
+              </Button>
             </div>
           </div>
         </div>
       </div>
-  
-      {/* Checkout Modal */}
-      <Modal isOpen={checkoutModalOpen} onClose={() => setCheckoutModalOpen(false)} size="lg" hideCloseButton>
+
+      {/* Invoice Modal */}
+      <Modal isOpen={isInvoiceOpen} onClose={handleCloseInvoice} size="3xl" scrollBehavior="inside">
         <ModalContent>
-          <ModalHeader>
-            <span>Invoice</span>
+          <ModalHeader style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <IconReceipt size={20} />
+            Invoice — {invoiceCode}
           </ModalHeader>
           <ModalBody>
-            <div ref={modalRef} dangerouslySetInnerHTML={{ __html: renderInvoiceTemplate() }} />
+            <div id="invoice-print" ref={invoiceRef} style={{ fontFamily: "Arial, sans-serif", padding: 20, background: "#fff" }}>
+              <div style={{ textAlign: "center", marginBottom: 16 }}>
+                <div style={{ fontSize: 20, fontWeight: 700, textTransform: "uppercase" }}>Invoice</div>
+                <div style={{ fontSize: 13, color: "#475569" }}>Invoice No: <strong>{invoiceCode}</strong></div>
+                <div style={{ fontSize: 13, color: "#475569" }}>
+                  Date: {postDate ? formatter.format(postDate.toDate(getLocalTimeZone())) : "—"}
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16, fontSize: 13 }}>
+                <div style={{ border: "1px solid #e2e8f0", borderRadius: 8, padding: "10px 14px" }}>
+                  <div style={{ fontWeight: 700, marginBottom: 6 }}>Bill To</div>
+                  <div>{selectedCustomer?.name}</div>
+                  <div>{selectedCustomer?.contact}</div>
+                  <div>{selectedCustomer?.address}</div>
+                  <div>{selectedCustomer?.city}</div>
+                </div>
+                <div style={{ border: "1px solid #e2e8f0", borderRadius: 8, padding: "10px 14px" }}>
+                  <div style={{ fontWeight: 700, marginBottom: 6 }}>Payment</div>
+                  <div>Method: {paymentMethod}</div>
+                  <div>Due Date: {dueDate ? formatter.format(dueDate.toDate(getLocalTimeZone())) : "—"}</div>
+                </div>
+              </div>
+
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ background: "#f1f5f9" }}>
+                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "left" }}>SKU</th>
+                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "left" }}>Product</th>
+                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "center" }}>Qty</th>
+                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right" }}>Unit Price</th>
+                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "center" }}>Disc%</th>
+                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right" }}>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cart.map((item, i) => (
+                    <tr key={i}>
+                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px" }}>{item.sku}</td>
+                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px" }}>{item.productName}</td>
+                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "center" }}>{item.quantity}</td>
+                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right" }}>LKR {item.price.toFixed(2)}</td>
+                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "center" }}>{item.discount}%</td>
+                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right" }}>LKR {(item.price * item.quantity * (1 - item.discount / 100)).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={5} style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right", fontWeight: 600 }}>Subtotal</td>
+                    <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right" }}>LKR {netTotal.toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td colSpan={5} style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right", fontWeight: 600, color: "#dc2626" }}>Discount</td>
+                    <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right", color: "#dc2626" }}>- LKR {totalDiscount.toFixed(2)}</td>
+                  </tr>
+                  <tr style={{ background: "#f1f5f9" }}>
+                    <td colSpan={5} style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right", fontWeight: 700 }}>Grand Total</td>
+                    <td style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right", fontWeight: 700 }}>LKR {grandTotal.toFixed(2)}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={generatePDF} color="secondary" fullWidth>
-              Export as PDF
-            </Button>
-            <Button onClick={handleCheckoutClose} color="default" fullWidth>
-              Close
-            </Button>
+            <Button color="primary" onPress={generatePDF}>Export PDF</Button>
+            <Button color="default" variant="light" onPress={handleCloseInvoice}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 }
