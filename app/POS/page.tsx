@@ -269,6 +269,101 @@ export default function POSPage() {
     }
   };
 
+  const buildInvoiceHTML = (code: string) => {
+    const rows = cart.map((item) => `
+      <tr ${item.isFree ? 'style="color: green; font-weight: bold;"' : ""}>
+        <td style="border:1px solid #000;padding:6px;">${item.quantity}</td>
+        <td style="border:1px solid #000;padding:6px;">${item.productName}</td>
+        <td style="border:1px solid #000;padding:6px;">${item.isFree ? "Free" : item.discount + "%"}</td>
+        <td style="border:1px solid #000;padding:6px;">${item.isFree ? "0.00" : item.price.toFixed(2)}</td>
+        <td style="border:1px solid #000;padding:6px;">${item.isFree ? "0.00" : (item.price * (1 - item.discount / 100) * item.quantity).toFixed(2)}</td>
+      </tr>
+    `).join("");
+
+    const emptyRows = Array(6).fill(`
+      <tr>
+        <td style="border:1px solid #000;padding:6px;">&nbsp;</td>
+        <td style="border:1px solid #000;padding:6px;"></td>
+        <td style="border:1px solid #000;padding:6px;"></td>
+        <td style="border:1px solid #000;padding:6px;"></td>
+        <td style="border:1px solid #000;padding:6px;"></td>
+      </tr>
+    `).join("");
+
+    const postDateStr = postDate ? formatter.format(postDate.toDate(getLocalTimeZone())) : "—";
+
+    return `
+      <div id="invoice-pdf-content" style="font-family:Arial,sans-serif;margin:0;padding:0;background:#fff;">
+        <div style="width:95%;margin:20px auto;padding:10px;border:1px solid #000;">
+          <div style="text-align:center;font-size:22px;font-weight:bold;margin-bottom:5px;text-transform:uppercase;">
+            Anuradha Transport Services
+          </div>
+          <div style="text-align:center;font-size:12px;margin-bottom:15px;">
+            No.219, Nawana, Mirigama<br/>
+            Tel: 0777 898 929 / 0727 898 929 / 0770 584 959
+          </div>
+
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:10px;">
+            <div><strong>Invoice No:</strong> ${code}</div>
+            <div><strong>Date:</strong> ${postDateStr}</div>
+          </div>
+
+          <div style="font-size:12px;border:1px solid #000;padding:8px;margin-bottom:10px;">
+            <strong>Brown &amp; Company PLC - Pharmaceuticals Division</strong><br/>
+            34, Sir Mohamed Macan Marker Mawatha, Colombo 03<br/>
+            Tel: 011 266 3000
+          </div>
+
+          <div style="font-size:12px;border:1px solid #000;padding:8px;margin-bottom:10px;">
+            <strong>Customer Name:</strong> ${selectedCustomer?.name}<br/>
+            <strong>Address:</strong> ${selectedCustomer?.address || "N/A"}<br/>
+            <strong>Contact No:</strong> ${selectedCustomer?.contact}
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead>
+              <tr style="background-color:#e0e0e0;">
+                <th style="border:1px solid #000;padding:6px;text-align:left;text-transform:uppercase;">Qty</th>
+                <th style="border:1px solid #000;padding:6px;text-align:left;text-transform:uppercase;">Description</th>
+                <th style="border:1px solid #000;padding:6px;text-align:left;text-transform:uppercase;">Discount</th>
+                <th style="border:1px solid #000;padding:6px;text-align:left;text-transform:uppercase;">Unit Price (LKR)</th>
+                <th style="border:1px solid #000;padding:6px;text-align:left;text-transform:uppercase;">Amount (LKR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+              ${emptyRows}
+              <tr>
+                <td colspan="3" style="border:none;"></td>
+                <td style="border:1px solid #000;padding:6px;"><strong>Sub Total</strong></td>
+                <td style="border:1px solid #000;padding:6px;">LKR ${grandTotal.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td colspan="3" style="border:none;"></td>
+                <td style="border:1px solid #000;padding:6px;"><strong>Discount</strong></td>
+                <td style="border:1px solid #000;padding:6px;">LKR ${totalDiscount.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td colspan="3" style="border:none;"></td>
+                <td style="border:1px solid #000;padding:6px;"><strong>Grand Total</strong></td>
+                <td style="border:1px solid #000;padding:6px;"><strong>LKR ${netTotal.toFixed(2)}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:15px;font-size:12px;border-top:1px solid #000;padding-top:8px;">
+            PLEASE DRAW THE CHEQUE IN FAVOUR OF ANURADHA TRANSPORT SERVICES
+          </div>
+
+          <div style="margin-top:30px;display:flex;justify-content:space-between;font-size:12px;">
+            <span>Checked By: ________________________</span>
+            <span>Goods Received By Customer</span>
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
   const handleCloseInvoice = () => {
     onInvoiceClose();
     setCart([]);
@@ -279,15 +374,16 @@ export default function POSPage() {
     setInvoiceCode("");
   };
 
-  const generatePDF = async () => {
+  const generatePDF = async (code?: string) => {
     if (typeof window === "undefined") return;
     const html2pdf = require("html2pdf.js");
-    const element = document.getElementById("invoice-print");
+    const targetCode = code || invoiceCode;
+    const element = document.getElementById("invoice-pdf-content");
     if (!element) return;
     await html2pdf()
       .set({
         margin: 0.5,
-        filename: `${invoiceCode}.pdf`,
+        filename: `${targetCode}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
@@ -629,80 +725,21 @@ export default function POSPage() {
       </div>
 
       {/* Invoice Modal */}
-      <Modal isOpen={isInvoiceOpen} onClose={handleCloseInvoice} size="3xl" scrollBehavior="inside">
+      <Modal isOpen={isInvoiceOpen} onClose={handleCloseInvoice} size="4xl" scrollBehavior="inside">
         <ModalContent>
           <ModalHeader style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <IconReceipt size={20} />
             Invoice — {invoiceCode}
           </ModalHeader>
           <ModalBody>
-            <div id="invoice-print" ref={invoiceRef} style={{ fontFamily: "Arial, sans-serif", padding: 20, background: "#fff" }}>
-              <div style={{ textAlign: "center", marginBottom: 16 }}>
-                <div style={{ fontSize: 20, fontWeight: 700, textTransform: "uppercase" }}>Invoice</div>
-                <div style={{ fontSize: 13, color: "#475569" }}>Invoice No: <strong>{invoiceCode}</strong></div>
-                <div style={{ fontSize: 13, color: "#475569" }}>
-                  Date: {postDate ? formatter.format(postDate.toDate(getLocalTimeZone())) : "—"}
-                </div>
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16, fontSize: 13 }}>
-                <div style={{ border: "1px solid #e2e8f0", borderRadius: 8, padding: "10px 14px" }}>
-                  <div style={{ fontWeight: 700, marginBottom: 6 }}>Bill To</div>
-                  <div>{selectedCustomer?.name}</div>
-                  <div>{selectedCustomer?.contact}</div>
-                  <div>{selectedCustomer?.address}</div>
-                  <div>{selectedCustomer?.city}</div>
-                </div>
-                <div style={{ border: "1px solid #e2e8f0", borderRadius: 8, padding: "10px 14px" }}>
-                  <div style={{ fontWeight: 700, marginBottom: 6 }}>Payment</div>
-                  <div>Method: {paymentMethod}</div>
-                  <div>Due Date: {dueDate ? formatter.format(dueDate.toDate(getLocalTimeZone())) : "—"}</div>
-                </div>
-              </div>
-
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                <thead>
-                  <tr style={{ background: "#f1f5f9" }}>
-                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "left" }}>SKU</th>
-                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "left" }}>Product</th>
-                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "center" }}>Qty</th>
-                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right" }}>Unit Price</th>
-                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "center" }}>Disc%</th>
-                    <th style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right" }}>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cart.map((item, i) => (
-                    <tr key={i}>
-                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px" }}>{item.sku}</td>
-                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px" }}>{item.productName}</td>
-                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "center" }}>{item.quantity}</td>
-                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right" }}>LKR {item.price.toFixed(2)}</td>
-                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "center" }}>{item.discount}%</td>
-                      <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right" }}>LKR {(item.price * item.quantity * (1 - item.discount / 100)).toFixed(2)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={5} style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right", fontWeight: 600 }}>Subtotal</td>
-                    <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right" }}>LKR {netTotal.toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={5} style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right", fontWeight: 600, color: "#dc2626" }}>Discount</td>
-                    <td style={{ border: "1px solid #e2e8f0", padding: "7px 10px", textAlign: "right", color: "#dc2626" }}>- LKR {totalDiscount.toFixed(2)}</td>
-                  </tr>
-                  <tr style={{ background: "#f1f5f9" }}>
-                    <td colSpan={5} style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right", fontWeight: 700 }}>Grand Total</td>
-                    <td style={{ border: "1px solid #e2e8f0", padding: "8px 10px", textAlign: "right", fontWeight: 700 }}>LKR {grandTotal.toFixed(2)}</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+            <div
+              ref={invoiceRef}
+              dangerouslySetInnerHTML={{ __html: buildInvoiceHTML(invoiceCode) }}
+            />
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onPress={generatePDF}>Export PDF</Button>
-            <Button color="default" variant="light" onPress={handleCloseInvoice}>Close</Button>
+            <Button color="primary" onPress={() => generatePDF(invoiceCode)}>Download PDF</Button>
+            <Button color="default" variant="light" onPress={handleCloseInvoice}>Close & New Sale</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

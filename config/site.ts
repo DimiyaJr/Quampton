@@ -43,6 +43,10 @@ export const siteConfig = {
       href: "/POS",
     },
     {
+      label: "Bills",
+      href: "/bills",
+    },
+    {
       label: "Customer",
       href: "/customer",
     },

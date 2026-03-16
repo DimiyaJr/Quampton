@@ -105,6 +105,38 @@ export const invoiceService = {
     return `INV${String(num).padStart(6, '0')}`;
   },
 
+  async getById(id: string) {
+    const { data, error } = await supabase
+      .from('invoices')
+      .select(`
+        *,
+        customers (
+          id,
+          code,
+          name,
+          email,
+          contact,
+          address,
+          city,
+          country
+        ),
+        invoice_items (
+          id,
+          sku,
+          product_name,
+          quantity,
+          price,
+          discount,
+          is_free
+        )
+      `)
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
   async getSalesData(groupBy: 'daily' | 'monthly' | 'yearly' = 'monthly') {
     const { data, error } = await supabase
       .from('invoices')
