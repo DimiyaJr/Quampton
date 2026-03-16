@@ -188,8 +188,8 @@ export default function ProductPage() {
   };
 
   const FormFields = () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label="SKU"
           placeholder="Auto-generated if empty"
@@ -218,7 +218,7 @@ export default function ProductPage() {
         ))}
       </Select>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Input
           type="number"
           label="Quantity"
@@ -286,19 +286,21 @@ export default function ProductPage() {
   );
 
   return (
-    <div style={{ padding: "24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "600", color: "#111827" }}>Products</h1>
+    <div className="p-4 sm:p-6 pb-20 md:pb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-5">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Products</h1>
         <Button
           color="primary"
           onPress={handleAdd}
-          size="lg"
-          startContent={<IconSquareRoundedPlus size={20} />}
+          size="md"
+          startContent={<IconSquareRoundedPlus size={18} />}
+          className="w-full sm:w-auto"
         >
           Add Product
         </Button>
       </div>
 
+      <div className="overflow-x-auto">
       <Table aria-label="Products table">
         <TableHeader>
           <TableColumn>SKU</TableColumn>
@@ -347,8 +349,9 @@ export default function ProductPage() {
           }}
         </TableBody>
       </Table>
+      </div>
 
-      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="2xl">
+      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
         <ModalContent>
           <ModalHeader>Add New Product</ModalHeader>
           <ModalBody><FormFields /></ModalBody>
@@ -359,7 +362,7 @@ export default function ProductPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="2xl">
+      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
         <ModalContent>
           <ModalHeader>Edit Product</ModalHeader>
           <ModalBody><FormFields /></ModalBody>

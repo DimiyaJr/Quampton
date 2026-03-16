@@ -24,25 +24,25 @@ export default function Inventory() {
   ];
 
   return (
-    <div className="container mx-auto px-4 md:px-16 xl:px-24 max-w-[1300px]">
-      <h1 className="text-center text-5xl font-bold text-black pb-12 pt-16">INVENTORY</h1>
-      
-      <div className="flex justify-center gap-6">
+    <div className="container mx-auto px-4 max-w-[1300px]">
+      <h1 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-black pb-8 pt-10 md:pb-12 md:pt-16">INVENTORY</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {list.map((item, index) => (
           <Card
             key={index}
             radius="lg"
             isPressable
-            className="w-[220px] h-[250px] bg-purple-500 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105"
+            className="w-full h-[160px] sm:h-[200px] md:h-[250px] bg-purple-500 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105"
             onClick={() => router.push(item.href)}
           >
             <CardBody className="flex flex-col items-center justify-center p-4">
               <Image
                 src={item.img}
                 alt={`Image for ${item.title}`}
-                className="w-20 h-20 filter brightness-0"
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 filter brightness-0"
               />
-              <p className="text-white text-lg font-semibold mt-4 text-center">
+              <p className="text-white text-sm sm:text-base md:text-lg font-semibold mt-3 md:mt-4 text-center">
                 {item.title}
               </p>
             </CardBody>

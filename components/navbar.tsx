@@ -78,19 +78,7 @@ export const Navbar = () => {
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        {/* <NavbarItem className="hidden lg:flex gap-2">
-          <Link isExternal aria-label="Twitter" href={siteConfig.links.twitter}>
-            <TwitterIcon className="text-default-500" />
-          </Link>
-          <Link isExternal aria-label="Discord" href={siteConfig.links.discord}>
-            <DiscordIcon className="text-default-500" />
-          </Link>
-          <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-            <GithubIcon className="text-default-500" />
-          </Link>
-          <ThemeSwitch />
-        </NavbarItem> */}
-         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
         <NavbarItem className="relative group hidden lg:flex">
           <span className="cursor-pointer flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#380556" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -98,7 +86,7 @@ export const Navbar = () => {
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </span>
-          <ul className="absolute hidden group-hover:flex flex-col bg-white shadow-lg mt-2 p-2 rounded right-0">
+          <ul className="absolute hidden group-hover:flex flex-col bg-white shadow-lg mt-2 p-2 rounded right-0 z-50 min-w-[160px]">
             {siteConfig.navMenuItems.map((item, index) => (
               <li
                 key={`${item.label}-${index}`}
@@ -118,24 +106,23 @@ export const Navbar = () => {
             ))}
           </ul>
         </NavbarItem>
-       
       </NavbarContent>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Toggle */}
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
         <NavbarMenuToggle />
       </NavbarContent>
 
-      <NavbarMenu>
-        {searchInput}
-        <div className="mx-4 mt-2 flex flex-col gap-2">
+      <NavbarMenu className="pt-4">
+        <div className="px-2 mb-3">{searchInput}</div>
+        <div className="mx-2 flex flex-col gap-1">
           {[...siteConfig.navItems, ...siteConfig.navMenuItems].map(
             (item, index) => (
               <NavbarMenuItem key={`${item.label}-${index}`}>
                 <NextLink
                   className={clsx(
                     linkStyles({ color: "foreground" }),
-                    "data-[active=true]:text-primary data-[active=true]:font-medium",
+                    "data-[active=true]:text-primary data-[active=true]:font-medium text-lg py-2 block",
                   )}
                   color="foreground"
                   href={item.href}

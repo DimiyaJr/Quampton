@@ -136,8 +136,8 @@ export default function CustomersPage() {
   };
 
   const CustomerForm = () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label="Full Name"
           placeholder="Enter customer name"
@@ -165,7 +165,7 @@ export default function CustomersPage() {
         value={formValues.address}
         onChange={(e) => setFormValues({ ...formValues, address: e.target.value })}
       />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label="City"
           placeholder="City"
@@ -187,59 +187,62 @@ export default function CustomersPage() {
   );
 
   return (
-    <div style={{ padding: "24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+    <div className="p-4 sm:p-6 pb-20 md:pb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-5">
         <div>
-          <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#111827", margin: 0 }}>Customers</h1>
-          <p style={{ fontSize: "14px", color: "#6b7280", margin: "4px 0 0" }}>Manage your customer database</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Customers</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage your customer database</p>
         </div>
         <Button
           color="primary"
           onPress={handleAdd}
-          size="lg"
-          startContent={<IconSquareRoundedPlus size={20} />}
+          size="md"
+          startContent={<IconSquareRoundedPlus size={18} />}
+          className="w-full sm:w-auto"
         >
           Add Customer
         </Button>
       </div>
 
-      <Table aria-label="Customers table" shadow="sm">
-        <TableHeader>
-          <TableColumn>CODE</TableColumn>
-          <TableColumn>NAME</TableColumn>
-          <TableColumn>EMAIL</TableColumn>
-          <TableColumn>CONTACT</TableColumn>
-          <TableColumn>CITY</TableColumn>
-          <TableColumn>COUNTRY</TableColumn>
-          <TableColumn>STATUS</TableColumn>
-          <TableColumn>ACTIONS</TableColumn>
-        </TableHeader>
-        <TableBody items={customers} isLoading={loading} loadingContent={<div>Loading customers...</div>} emptyContent="No customers found. Add your first customer!">
-          {(customer) => (
-            <TableRow key={customer.id}>
-              <TableCell style={{ fontSize: "13px", color: "#6b7280" }}>{customer.code}</TableCell>
-              <TableCell style={{ fontWeight: "500", color: "#111827" }}>{customer.name}</TableCell>
-              <TableCell style={{ color: "#374151" }}>{customer.email || "-"}</TableCell>
-              <TableCell style={{ color: "#374151" }}>{customer.contact || "-"}</TableCell>
-              <TableCell style={{ color: "#374151" }}>{customer.city || "-"}</TableCell>
-              <TableCell style={{ color: "#374151" }}>{customer.country || "-"}</TableCell>
-              <TableCell>
-                <Chip color={customer.status === 1 ? "success" : "default"} variant="flat" size="sm">
-                  {customer.status === 1 ? "Active" : "Inactive"}
-                </Chip>
-              </TableCell>
-              <TableCell>
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <Button size="sm" color="primary" startContent={<IconEdit size={15} />} onPress={() => handleEdit(customer)}>Edit</Button>
-                  <Button size="sm" color="danger" startContent={<IconTrashX size={15} />} onPress={() => { setEditingCustomer(customer); onDeleteOpen(); }}>Delete</Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <div className="overflow-x-auto">
+        <Table aria-label="Customers table" shadow="sm">
+          <TableHeader>
+            <TableColumn>CODE</TableColumn>
+            <TableColumn>NAME</TableColumn>
+            <TableColumn>EMAIL</TableColumn>
+            <TableColumn>CONTACT</TableColumn>
+            <TableColumn>CITY</TableColumn>
+            <TableColumn>COUNTRY</TableColumn>
+            <TableColumn>STATUS</TableColumn>
+            <TableColumn>ACTIONS</TableColumn>
+          </TableHeader>
+          <TableBody items={customers} isLoading={loading} loadingContent={<div>Loading customers...</div>} emptyContent="No customers found. Add your first customer!">
+            {(customer) => (
+              <TableRow key={customer.id}>
+                <TableCell style={{ fontSize: "13px", color: "#6b7280" }}>{customer.code}</TableCell>
+                <TableCell style={{ fontWeight: "500", color: "#111827" }}>{customer.name}</TableCell>
+                <TableCell style={{ color: "#374151" }}>{customer.email || "-"}</TableCell>
+                <TableCell style={{ color: "#374151" }}>{customer.contact || "-"}</TableCell>
+                <TableCell style={{ color: "#374151" }}>{customer.city || "-"}</TableCell>
+                <TableCell style={{ color: "#374151" }}>{customer.country || "-"}</TableCell>
+                <TableCell>
+                  <Chip color={customer.status === 1 ? "success" : "default"} variant="flat" size="sm">
+                    {customer.status === 1 ? "Active" : "Inactive"}
+                  </Chip>
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-2">
+                    <Button size="sm" color="primary" startContent={<IconEdit size={15} />} onPress={() => handleEdit(customer)}>Edit</Button>
+                    <Button size="sm" color="danger" startContent={<IconTrashX size={15} />} onPress={() => { setEditingCustomer(customer); onDeleteOpen(); }}>Delete</Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
-      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="2xl">
+      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
         <ModalContent>
           <ModalHeader>Add New Customer</ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>
@@ -250,7 +253,7 @@ export default function CustomersPage() {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="2xl">
+      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="full" classNames={{ base: "sm:max-w-2xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
         <ModalContent>
           <ModalHeader>Edit Customer</ModalHeader>
           <ModalBody><CustomerForm /></ModalBody>

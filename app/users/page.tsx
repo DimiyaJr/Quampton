@@ -179,14 +179,15 @@ export default function UsersPage() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "600" }}>User Management</h1>
-        <Button color="primary" onPress={() => handleOpenModal()} size="lg">
+    <div className="p-4 sm:p-6 pb-20 md:pb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-5">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">User Management</h1>
+        <Button color="primary" onPress={() => handleOpenModal()} size="md" className="w-full sm:w-auto">
           Add New User
         </Button>
       </div>
 
+      <div className="overflow-x-auto">
       <Table aria-label="Users table">
         <TableHeader>
           <TableColumn>USERNAME</TableColumn>
@@ -234,12 +235,13 @@ export default function UsersPage() {
           )}
         </TableBody>
       </Table>
+      </div>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="full" classNames={{ base: "sm:max-w-xl sm:mx-auto sm:my-8 sm:rounded-xl sm:h-auto" }}>
         <ModalContent>
           <ModalHeader>{editingUser ? "Edit User" : "Add New User"}</ModalHeader>
           <ModalBody>
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div className="flex flex-col gap-4">
               <Input
                 label="Username"
                 placeholder="Enter username"

@@ -251,7 +251,7 @@ export default function PurchaseOrderPage() {
   ));
 
   return (
-    <div>
+    <div className="pb-20 md:pb-4">
       {/* <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h4>Purchase Orders</h4>
         <Button onClick={() => setViewAddItem("add")} color="primary">
@@ -259,23 +259,18 @@ export default function PurchaseOrderPage() {
         </Button>
       </div> */}
 
-<div
-                className="sticky top-0 overflow-hidden h-fit w-full items-center justify-between rounded-t-2xl bg-white px-4 pb-[20px] pt-4 shadow-2xl shadow-gray-100 dark:!bg-navy-700 dark:shadow-none"
-                >
-                <h1 className="text-3xl font-bold text-purple-800 dark:text-white">
-                Purchase Orders
-                </h1>
-                <button
-                    className=" absolute top-4 right-0 linear rounded-[20px] bg-purple-400 px-4 py-2 text-base font-medium text-brand-500 transition duration-200  hover:bg-purple-500 active:bg-purple-500 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:active:bg-white/20"
-                    onClick={() => { open;
-                      console.log("Opening Add Product Modal");
-                      setViewAddItem("add");
-                    }}
-               
-               >
-                    Add Purchase Orders
-                </button>
-                </div>
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white px-4 pb-4 pt-4 rounded-t-2xl shadow-sm">
+  <h1 className="text-2xl sm:text-3xl font-bold text-purple-800">Purchase Orders</h1>
+  <button
+    className="w-full sm:w-auto rounded-xl bg-purple-500 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-purple-600 active:bg-purple-700"
+    onClick={() => {
+      console.log("Opening Add Product Modal");
+      setViewAddItem("add");
+    }}
+  >
+    Add Purchase Orders
+  </button>
+</div>
 
       <Modal
         isOpen={viewAddItem === "add"}
@@ -315,42 +310,37 @@ export default function PurchaseOrderPage() {
   })}
 </Select>
 
-          <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", marginTop: "1rem" }}>
-            <Card style={{ padding: "1rem", flex: "1" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+            <Card style={{ padding: "1rem" }}>
               <p><b>Supplier Code:</b> {selectedSupplier?.code}</p>
               <p><b>Supplier Name:</b> {selectedSupplier?.name}</p>
             </Card>
-            <Card style={{ padding: "1rem", flex: "1" }}>
+            <Card style={{ padding: "1rem" }}>
               <p><b>Email:</b> {selectedSupplier?.email}</p>
               <p><b>Phone:</b> {selectedSupplier?.phone}</p>
             </Card>
-            <Card style={{ padding: "1rem", flex: "1" }}>
+            <Card style={{ padding: "1rem" }}>
               <p><b>Address:</b> {selectedSupplier?.address}</p>
               <p><b>City:</b> {selectedSupplier?.city}</p>
               <p><b>Country:</b> {selectedSupplier?.country}</p>
             </Card>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", marginTop: "1rem" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4 items-end">
             <Autocomplete
               label="Select Product"
               value={selectedProductName}
               items={productAutocompleteList}
               onInputChange={(value) => {
-                console.log("product selected:", value);  
-               
-                handleProductSelect(value);  // Pass the full supplier object
+                console.log("product selected:", value);
+                handleProductSelect(value);
               }}
-            
             >
-                {productAutocompleteList.map((item, index) => {
-    console.log("item in list:", item);  // Debugging each supplier
-    return (
-      <AutocompleteItem key={item} value={item}>
-        {item}
-      </AutocompleteItem>
-    );
-  })}
+              {productAutocompleteList.map((item) => (
+                <AutocompleteItem key={item} value={item}>
+                  {item}
+                </AutocompleteItem>
+              ))}
             </Autocomplete>
 
             <Input
@@ -360,22 +350,21 @@ export default function PurchaseOrderPage() {
               onChange={(e) => setProductQuantity(Number(e.target.value) || 0)}
             />
 
-
             <Input
               label="Cost"
               type="number"
               value={productCost?.toString() || ""}
               onChange={(e) => setProductCost(Number(e.target.value))}
             />
-        <Button 
-  onClick={() => {
-    console.log("Opening Add Product Modal");
-    handleAddProductToReceipt(); // Call the function
-  }}
->
-  Add
-</Button>
-           
+            <Button
+              className="w-full"
+              onClick={() => {
+                console.log("Opening Add Product Modal");
+                handleAddProductToReceipt();
+              }}
+            >
+              Add
+            </Button>
           </div>
           <Table>
             <TableHeader>
@@ -405,9 +394,9 @@ export default function PurchaseOrderPage() {
             </TableBody>
           </Table>
       
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1rem" }}>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mt-4">
             <p><b>Total Cost:</b> LKR {totalCost}</p>
-            <Button onClick={handleSavePurchaseOrder}>Save Order</Button>
+            <Button className="w-full sm:w-auto" onClick={handleSavePurchaseOrder}>Save Order</Button>
           </div>
         </ModalBody>
         </ModalContent>
@@ -451,10 +440,12 @@ export default function PurchaseOrderPage() {
        
           </ModalContent>
       </Modal>
-      <Table aria-label="Receipt Items">
-            {headers}
-            <TableBody>{rows}</TableBody>
-          </Table>
+      <div className="overflow-x-auto">
+        <Table aria-label="Receipt Items">
+          {headers}
+          <TableBody>{rows}</TableBody>
+        </Table>
+      </div>
 
     </div>
   );
