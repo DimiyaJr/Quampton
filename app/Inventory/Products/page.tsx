@@ -187,7 +187,7 @@ export default function ProductPage() {
     return { label: "In Stock", color: "success" as const };
   };
 
-  const FormFields = () => (
+  const formFields = (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
@@ -356,7 +356,7 @@ export default function ProductPage() {
           <ModalHeader>
             <span>Add New Product</span>
           </ModalHeader>
-          <ModalBody><FormFields /></ModalBody>
+          <ModalBody>{formFields}</ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onAddClose(); resetForm(); }}>Cancel</Button>
             <Button color="primary" onPress={handleSave}>Add Product</Button>
@@ -369,7 +369,7 @@ export default function ProductPage() {
           <ModalHeader>
             <span>Edit Product</span>
           </ModalHeader>
-          <ModalBody><FormFields /></ModalBody>
+          <ModalBody>{formFields}</ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onEditClose(); resetForm(); }}>Cancel</Button>
             <Button color="primary" onPress={handleSave}>Update Product</Button>

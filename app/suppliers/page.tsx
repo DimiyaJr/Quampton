@@ -135,7 +135,7 @@ export default function SuppliersPage() {
     }
   };
 
-  const SupplierForm = () => (
+  const supplierForm = (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
@@ -247,7 +247,7 @@ export default function SuppliersPage() {
           <ModalHeader>
             <span>Add New Supplier</span>
           </ModalHeader>
-          <ModalBody><SupplierForm /></ModalBody>
+          <ModalBody>{supplierForm}</ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onAddClose(); resetForm(); }}>Cancel</Button>
             <Button color="primary" onPress={handleSave}>Create Supplier</Button>
@@ -260,7 +260,7 @@ export default function SuppliersPage() {
           <ModalHeader>
             <span>Edit Supplier</span>
           </ModalHeader>
-          <ModalBody><SupplierForm /></ModalBody>
+          <ModalBody>{supplierForm}</ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onEditClose(); resetForm(); }}>Cancel</Button>
             <Button color="primary" onPress={handleSave}>Update Supplier</Button>

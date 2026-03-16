@@ -135,7 +135,7 @@ export default function CustomersPage() {
     }
   };
 
-  const CustomerForm = () => (
+  const customerForm = (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
@@ -247,7 +247,7 @@ export default function CustomersPage() {
           <ModalHeader>
             <span>Add New Customer</span>
           </ModalHeader>
-          <ModalBody><CustomerForm /></ModalBody>
+          <ModalBody>{customerForm}</ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onAddClose(); resetForm(); }}>Cancel</Button>
             <Button color="primary" onPress={handleSave}>Create Customer</Button>
@@ -260,7 +260,7 @@ export default function CustomersPage() {
           <ModalHeader>
             <span>Edit Customer</span>
           </ModalHeader>
-          <ModalBody><CustomerForm /></ModalBody>
+          <ModalBody>{customerForm}</ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={() => { onEditClose(); resetForm(); }}>Cancel</Button>
             <Button color="primary" onPress={handleSave}>Update Customer</Button>
