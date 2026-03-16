@@ -22,7 +22,9 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { persistSession: false },
+    });
 
     const { username, password }: LoginRequest = await req.json();
 
@@ -31,65 +33,38 @@ Deno.serve(async (req: Request) => {
         JSON.stringify({ message: "Username and password are required" }),
         {
           status: 400,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
 
-    const { data: user, error } = await supabase
-      .from("users")
-      .select("id, email, username, password_hash, full_name, role, status")
-      .eq("username", username)
-      .maybeSingle();
-
-    if (error || !user) {
-      return new Response(
-        JSON.stringify({ message: "Invalid username or password" }),
-        {
-          status: 401,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    if (user.status !== 1) {
-      return new Response(
-        JSON.stringify({ message: "Account is inactive" }),
-        {
-          status: 403,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    const { data: verifiedUsers } = await supabase.rpc("verify_user_password", {
+    const { data: verifiedUsers, error: rpcError } = await supabase.rpc("verify_user_password", {
       p_username: username,
       p_password: password,
     });
 
-    const passwordMatch = verifiedUsers && verifiedUsers.length > 0;
+    if (rpcError) {
+      console.error("RPC error:", rpcError);
+      return new Response(
+        JSON.stringify({ message: "Login service error", detail: rpcError.message }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
 
-    if (!passwordMatch) {
+    if (!verifiedUsers || verifiedUsers.length === 0) {
       return new Response(
         JSON.stringify({ message: "Invalid username or password" }),
         {
           status: 401,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
+
+    const user = verifiedUsers[0];
 
     const token = btoa(JSON.stringify({
       id: user.id,
@@ -114,10 +89,7 @@ Deno.serve(async (req: Request) => {
       }),
       {
         status: 200,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   } catch (error) {
@@ -126,10 +98,7 @@ Deno.serve(async (req: Request) => {
       JSON.stringify({ message: "An error occurred during login" }),
       {
         status: 500,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   }
