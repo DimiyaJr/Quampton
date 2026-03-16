@@ -55,22 +55,23 @@ export const invoiceService = {
 
     if (itemsError) throw itemsError;
 
-    for (const item of invoiceData.items) {
-      if (!item.is_free) {
+    const stockUpdates = invoiceData.items.filter(item => !item.is_free && item.product_id);
+    await Promise.all(
+      stockUpdates.map(async (item) => {
         const { data: product } = await supabase
           .from('products')
           .select('quantity')
-          .eq('sku', item.sku)
-          .single();
+          .eq('id', item.product_id!)
+          .maybeSingle();
 
         if (product) {
           await supabase
             .from('products')
             .update({ quantity: product.quantity - item.quantity })
-            .eq('sku', item.sku);
+            .eq('id', item.product_id!);
         }
-      }
-    }
+      })
+    );
 
     return { ...invoice, invoice_code: invoiceCode };
   },

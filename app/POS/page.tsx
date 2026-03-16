@@ -617,6 +617,7 @@ export default function POSPage() {
                   No items added yet. Search and add products above.
                 </div>
               ) : (
+                <div style={{ maxHeight: 320, overflowY: "auto", borderRadius: 8, border: "1px solid #f1f5f9" }}>
                 <Table aria-label="Cart" removeWrapper>
                   <TableHeader>
                     <TableColumn>SKU</TableColumn>
@@ -653,6 +654,7 @@ export default function POSPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               )}
             </div>
           </div>
