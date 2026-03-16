@@ -44,7 +44,7 @@ export const invoiceService = {
         invoiceData.items.map(item => ({
           invoice_id: invoice.id,
           product_id: item.product_id || null,
-          sku: item.sku,
+          sku: item.sku || null,
           product_name: item.product_name,
           quantity: item.quantity,
           price: item.price,

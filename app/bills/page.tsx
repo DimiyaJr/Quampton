@@ -127,7 +127,7 @@ export default function BillsPage() {
     const rows = inv.invoice_items.map((item) => `
       <tr ${item.is_free ? 'style="color:green;font-weight:bold;"' : ""}>
         <td style="border:1px solid #000;padding:6px;">${item.quantity}</td>
-        <td style="border:1px solid #000;padding:6px;">${item.product_name}</td>
+        <td style="border:1px solid #000;padding:6px;">${item.product_name}${item.sku ? ` (${item.sku})` : ""}</td>
         <td style="border:1px solid #000;padding:6px;">${item.is_free ? "Free" : item.discount + "%"}</td>
         <td style="border:1px solid #000;padding:6px;">${item.is_free ? "0.00" : item.price.toFixed(2)}</td>
         <td style="border:1px solid #000;padding:6px;">${item.is_free ? "0.00" : (item.price * (1 - item.discount / 100) * item.quantity).toFixed(2)}</td>
