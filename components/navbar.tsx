@@ -17,7 +17,7 @@ import Image from "next/image";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-//import * as SolarIconSet from "solar-icon-set";
+import * as SolarIconSet from "solar-icon-set";
 import {
   TwitterIcon,
   GithubIcon,
