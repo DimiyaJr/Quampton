@@ -1,27 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Input,
-  Button,
-  Switch,
-  Table,
-  Modal,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  ModalContent,
-  Chip,
-  Select,
-  SelectItem,
-  Image,
-} from "@nextui-org/react";
+import { Input } from "@nextui-org/input";
+import { Button } from "@nextui-org/button";
+import { Switch } from "@nextui-org/switch";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/table";
+import { Modal, ModalHeader, ModalBody, ModalFooter, ModalContent, useDisclosure } from "@nextui-org/modal";
+import { Chip } from "@nextui-org/chip";
+import { Select, SelectItem } from "@nextui-org/select";
+import { Image } from "@nextui-org/image";
 import { IconEdit, IconTrashX, IconSquareRoundedPlus, IconPhoto } from "@tabler/icons-react";
 import { productService } from "@/lib/services/products";
 import { categoryService } from "@/lib/services/categories";

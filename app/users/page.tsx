@@ -1,24 +1,11 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
-  Select,
-  SelectItem,
-  useDisclosure,
-  Chip,
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/table";
+import { Button } from "@nextui-org/button";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
+import { Input } from "@nextui-org/input";
+import { Select, SelectItem } from "@nextui-org/select";
+import { Chip } from "@nextui-org/chip";
 import { supabase } from "@/lib/supabase";
 
 interface User {

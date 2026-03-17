@@ -1,18 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Button,
-  Input,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  Chip,
-  Spinner,
-} from "@nextui-org/react";
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/input";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
+import { Chip } from "@nextui-org/chip";
+import { Spinner } from "@nextui-org/spinner";
 import { IconSearch, IconReceipt, IconDownload, IconEye, IconFileInvoice } from "@tabler/icons-react";
 import { invoiceService } from "@/lib/services/invoices";
 

@@ -1,5 +1,6 @@
 "use client";
-import { Card, CardBody, Image } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/card";
+import { Image } from "@nextui-org/image";
 import { useRouter } from "next/navigation";
 
 export default function Inventory() {

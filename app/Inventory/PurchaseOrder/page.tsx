@@ -2,29 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Input,
-  Button,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableColumn,
-  Select,
-  Autocomplete,
-  AutocompleteSection,
-  AutocompleteItem,
-  Card,
-  ModalContent,
-  SelectSection,
-  SelectItem,
-  useDisclosure,
-  ModalFooter,
-} from "@nextui-org/react";
+import { Input } from "@nextui-org/input";
+import { Button } from "@nextui-org/button";
+import { Table, TableHeader, TableBody, TableRow, TableCell, TableColumn } from "@nextui-org/table";
+import { Modal, ModalHeader, ModalBody, ModalFooter, ModalContent, useDisclosure } from "@nextui-org/modal";
+import { Select, SelectSection, SelectItem } from "@nextui-org/select";
+import { Autocomplete, AutocompleteSection, AutocompleteItem } from "@nextui-org/autocomplete";
+import { Card } from "@nextui-org/card";
 import { IconEye, IconTrashX, IconSquareRoundedPlus } from "@tabler/icons-react";
 import API_ENDPOINTS from "../../API";
 
