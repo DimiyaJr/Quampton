@@ -1,10 +1,13 @@
 "use client";
 
-import { title } from "@/components/primitives";
 import { useState, useEffect } from "react";
-import { Line } from "react-chartjs-2";
-import "chart.js/auto";
-import API_ENDPOINTS from "../API"; // Ensure correct path
+import dynamic from "next/dynamic";
+import API_ENDPOINTS from "../API";
+
+const LineChart = dynamic(
+  () => import("@/components/sales-line-chart"),
+  { ssr: false, loading: () => <p className="text-sm text-gray-500">Loading chart...</p> }
+);
 
 interface SalesDataType {
   date?: string;
@@ -13,10 +16,10 @@ interface SalesDataType {
   total_net: string;
 }
 
-export default function HomePage() { // Fixed function name
-  const [salesData, setSalesData] = useState<SalesDataType[]>([]); // Ensure array type
+export default function HomePage() {
+  const [salesData, setSalesData] = useState<SalesDataType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [groupBy, setGroupBy] = useState("daily"); // Default grouping: daily
+  const [groupBy, setGroupBy] = useState("daily");
 
   const fetchSalesData = async () => {
     setLoading(true);
@@ -30,15 +33,13 @@ export default function HomePage() { // Fixed function name
 
       const res = await fetch(url);
       const data = await res.json();
-      setSalesData(data.data[0] || []); // Ensure it's an array
-      console.log(data.data[0])
+      setSalesData(data.data[0] || []);
     } catch (error) {
       console.error("Error fetching sales data:", error);
     } finally {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchSalesData();
@@ -50,19 +51,20 @@ export default function HomePage() { // Fixed function name
         ? item.year
         : groupBy === "monthly"
         ? item.month
-        : item.date?.split('T')[0]
+        : item.date?.split("T")[0]
     ),
     datasets: [
       {
         label: "Net Sales",
         data: salesData.map((item) => item.total_net),
-        borderColor: "#4F46E5",
-        backgroundColor: "rgba(79, 70, 229, 0.2)",
+        borderColor: "#2563eb",
+        backgroundColor: "rgba(37, 99, 235, 0.1)",
         fill: true,
         tension: 0.4,
       },
     ],
   };
+
   const totalSales = salesData.reduce((sum, item) => sum + parseFloat(item.total_net), 0);
 
   return (
@@ -105,7 +107,7 @@ export default function HomePage() { // Fixed function name
         <div className="grid grid-cols-1 gap-4 sm:gap-6 w-full max-w-6xl">
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 w-full h-[40vh] sm:h-[50vh]">
             <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Sales Over Time</h2>
-            <Line data={chartData} options={{ maintainAspectRatio: false }} />
+            <LineChart data={chartData} options={{ maintainAspectRatio: false }} />
           </div>
         </div>
       )}

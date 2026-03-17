@@ -376,7 +376,8 @@ export default function POSPage() {
 
   const generatePDF = async (code?: string) => {
     if (typeof window === "undefined") return;
-    const html2pdf = require("html2pdf.js");
+    const html2pdfModule = await import("html2pdf.js");
+    const html2pdf = html2pdfModule.default;
     const targetCode = code || invoiceCode;
     const element = document.getElementById("invoice-pdf-content");
     if (!element) return;

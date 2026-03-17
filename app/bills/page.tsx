@@ -222,7 +222,8 @@ export default function BillsPage() {
 
   const handleDownloadPDF = async () => {
     if (!selectedInvoice || typeof window === "undefined") return;
-    const html2pdf = require("html2pdf.js");
+    const html2pdfModule = await import("html2pdf.js");
+    const html2pdf = html2pdfModule.default;
     const element = document.getElementById("invoice-pdf-content");
     if (!element) return;
     await html2pdf()
