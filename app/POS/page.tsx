@@ -178,14 +178,12 @@ export default function POSPage() {
       return;
     }
 
-    const newItems: CartItem[] = [];
-    const existingIndex = cart.findIndex((i) => i.sku === selectedProduct.sku && !i.isFree);
+    const newCart = [...cart];
+    const existingIndex = newCart.findIndex((i) => i.sku === selectedProduct.sku && !i.isFree);
     if (existingIndex > -1) {
-      const updated = [...cart];
-      updated[existingIndex].quantity += itemQty;
-      setCart(updated);
+      newCart[existingIndex].quantity += itemQty;
     } else {
-      newItems.push({
+      newCart.push({
         productId: selectedProduct.id,
         sku: selectedProduct.sku,
         productName: selectedProduct.name,
@@ -193,9 +191,69 @@ export default function POSPage() {
         quantity: itemQty,
         discount: itemDiscount,
       });
-      setCart((prev) => [...prev, ...newItems]);
     }
 
+    const productName = selectedProduct.name;
+
+    if (productName === "DHP") {
+      let freeDHP = 0;
+      let freeLepto = 0;
+      if (itemQty >= 200) { freeDHP = 50; freeLepto = 250; }
+      else if (itemQty >= 150) { freeDHP = 35; freeLepto = 185; }
+      else if (itemQty >= 100) { freeDHP = 25; freeLepto = 125; }
+      else if (itemQty >= 50) { freeDHP = 12; freeLepto = 62; }
+      if (freeDHP > 0) {
+        newCart.push({ productId: "", sku: "DHP_FREE", productName: "DHP (Free)", price: 0, quantity: freeDHP, discount: 100, isFree: true });
+        newCart.push({ productId: "", sku: "LEPTO_FREE", productName: "Lepto (Free)", price: 0, quantity: freeLepto, discount: 100, isFree: true });
+      }
+    }
+
+    if (productName === "Parvo") {
+      let freeParvo = 0;
+      let freeDilund = 0;
+      if (itemQty >= 200) { freeParvo = 50; freeDilund = 250; }
+      else if (itemQty >= 150) { freeParvo = 35; freeDilund = 185; }
+      else if (itemQty >= 100) { freeParvo = 25; freeDilund = 125; }
+      else if (itemQty >= 50) { freeParvo = 12; freeDilund = 62; }
+      if (freeParvo > 0) {
+        newCart.push({ productId: "", sku: "PARVO_FREE", productName: "Parvo (Free)", price: 0, quantity: freeParvo, discount: 100, isFree: true });
+        newCart.push({ productId: "", sku: "DILUND_FREE", productName: "Dilund (Free)", price: 0, quantity: freeDilund, discount: 100, isFree: true });
+      }
+    }
+
+    if (productName === "Puppy DP") {
+      newCart.push({ productId: "", sku: "DILUND_FREE", productName: "Dilund (Free)", price: 0, quantity: itemQty, discount: 100, isFree: true });
+    }
+
+    if (productName === "Tri Cat") {
+      const freeTriCat = Math.floor(itemQty / 10);
+      if (freeTriCat > 0) {
+        newCart.push({ productId: "", sku: "TRI_CAT_FREE", productName: "Tri Cat (Free)", price: 0, quantity: freeTriCat, discount: 100, isFree: true });
+      }
+    }
+
+    if (productName === "Beranil") {
+      const freeBeranil = Math.floor(itemQty / 10);
+      if (freeBeranil > 0) {
+        newCart.push({ productId: "", sku: "BERANIL_FREE", productName: "Beranil (Free)", price: 0, quantity: freeBeranil, discount: 100, isFree: true });
+      }
+    }
+
+    if (productName === "Avilin") {
+      const freeAvilin = Math.floor(itemQty / 10);
+      if (freeAvilin > 0) {
+        newCart.push({ productId: "", sku: "AVILIN_FREE", productName: "Avilin (Free)", price: 0, quantity: freeAvilin, discount: 100, isFree: true });
+      }
+    }
+
+    if (productName === "Prednisolone") {
+      const freePrednisolone = Math.floor(itemQty / 10);
+      if (freePrednisolone > 0) {
+        newCart.push({ productId: "", sku: "PREDNISOLONE_FREE", productName: "Prednisolone (Free)", price: 0, quantity: freePrednisolone, discount: 100, isFree: true });
+      }
+    }
+
+    setCart(newCart);
     setSelectedProduct(null);
     setProductSearch("");
     setItemQty(1);
