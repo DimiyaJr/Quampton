@@ -15,6 +15,7 @@ import NextLink from "next/link";
 import clsx from "clsx";
 import logo2 from "../public/logo2.jpg";
 import Image from "next/image";
+import { useState, useRef, useEffect } from "react";
 
 import { siteConfig } from "@/config/site";
 import { SearchIcon } from "@/components/icons";
@@ -22,6 +23,18 @@ import { useAuth } from "@/lib/auth-context";
 
 export const Navbar = () => {
   const { logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const searchInput = (
     <Input
@@ -38,30 +51,7 @@ export const Navbar = () => {
     />
   );
 
-  const renderMenuLink = (item: { label: string; href: string }, index: number) => {
-    if (item.label === "Logout") {
-      return (
-        <li key={`${item.label}-${index}`} className="p-2 hover:bg-gray-100 rounded">
-          <button
-            onClick={logout}
-            className="w-full text-left text-sm text-red-600 font-medium hover:text-red-700"
-          >
-            Logout
-          </button>
-        </li>
-      );
-    }
-    return (
-      <li key={`${item.label}-${index}`} className="p-2 hover:bg-gray-100 rounded">
-        <NextLink
-          className={clsx(linkStyles({ color: "foreground" }), "data-[active=true]:text-primary data-[active=true]:font-medium")}
-          href={item.href}
-        >
-          {item.label}
-        </NextLink>
-      </li>
-    );
-  };
+  const menuItems = siteConfig.navMenuItems;
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -98,16 +88,98 @@ export const Navbar = () => {
       {/* Right Side Navigation */}
       <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem className="relative group hidden lg:flex">
-          <span className="cursor-pointer flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#380556" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </span>
-          <ul className="absolute hidden group-hover:flex flex-col bg-white shadow-lg mt-2 p-2 rounded right-0 z-50 min-w-[160px] top-full">
-            {siteConfig.navMenuItems.map((item, index) => renderMenuLink(item, index))}
-          </ul>
+        <NavbarItem className="hidden lg:flex">
+          <div ref={dropdownRef} style={{ position: "relative" }}>
+            <button
+              onClick={() => setOpen((v) => !v)}
+              style={{
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: open ? "#dbeafe" : "#e0f2fe",
+                border: "none",
+                outline: "none",
+                transition: "background 0.15s",
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0369a1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+
+            {open && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 8px)",
+                  right: 0,
+                  background: "#fff",
+                  borderRadius: "12px",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.14)",
+                  minWidth: "180px",
+                  zIndex: 9999,
+                  border: "1px solid #f1f5f9",
+                  overflow: "hidden",
+                  padding: "6px",
+                }}
+              >
+                {menuItems.map((item, index) => {
+                  if (item.label === "Logout") {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => { setOpen(false); logout(); }}
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                          padding: "9px 14px",
+                          borderRadius: "8px",
+                          background: "none",
+                          border: "none",
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: "#dc2626",
+                          cursor: "pointer",
+                          display: "block",
+                          transition: "background 0.12s",
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.background = "#fef2f2")}
+                        onMouseLeave={e => (e.currentTarget.style.background = "none")}
+                      >
+                        Logout
+                      </button>
+                    );
+                  }
+                  return (
+                    <NextLink
+                      key={index}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      style={{
+                        display: "block",
+                        padding: "9px 14px",
+                        borderRadius: "8px",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "#1e293b",
+                        textDecoration: "none",
+                        transition: "background 0.12s",
+                      }}
+                      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = "#f0f9ff")}
+                      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = "none")}
+                    >
+                      {item.label}
+                    </NextLink>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </NavbarItem>
       </NavbarContent>
 
