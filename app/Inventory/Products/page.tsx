@@ -374,7 +374,7 @@ export default function ProductPage() {
           </ModalBody>
           <ModalFooter>
             <Button color="default" variant="light" onPress={onDeleteClose}>Cancel</Button>
-            <Button color="danger" onPress={handleDeleteConfirm}>Delete</Button>
+            <Button color="danger" onPress={handleDeleteConfirm} style={{ background: "firebrick", color: "white", borderColor: "firebrick" }}>Delete</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

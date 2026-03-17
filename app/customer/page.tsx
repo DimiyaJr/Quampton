@@ -224,7 +224,7 @@ export default function CustomersPage() {
                 <TableCell>
                   <div className="flex gap-2">
                     <Button size="sm" color="primary" startContent={<IconEdit size={15} />} onPress={() => handleEdit(customer)}>Edit</Button>
-                    <Button size="sm" color="danger" variant="solid" startContent={<IconTrashX size={15} />} onPress={() => { setEditingCustomer(customer); setIsDeleteOpen(true); }}>Delete</Button>
+                    <Button size="sm" color="danger" variant="solid" startContent={<IconTrashX size={15} />} onPress={() => { setEditingCustomer(customer); setIsDeleteOpen(true); }} style={{ background: "firebrick", color: "white", borderColor: "firebrick" }}>Delete</Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -250,7 +250,7 @@ export default function CustomersPage() {
       <SimpleModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} title="Confirm Delete"
         footer={<>
           <button onClick={() => setIsDeleteOpen(false)} style={{ padding: "8px 18px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "#fff", cursor: "pointer", fontSize: "14px", color: "#374151" }}>Cancel</button>
-          <button onClick={handleDeleteConfirm} style={{ padding: "8px 18px", borderRadius: "8px", border: "none", background: "#f31260", color: "#fff", cursor: "pointer", fontSize: "14px", fontWeight: 600 }}>Delete</button>
+          <button onClick={handleDeleteConfirm} style={{ padding: "8px 18px", borderRadius: "8px", border: "none", background: "firebrick", backgroundColor: "firebrick", color: "#fff", cursor: "pointer", fontSize: "14px", fontWeight: 600 }}>Delete</button>
         </>}
       >
         <p style={{ margin: 0, color: "#374151", fontSize: "15px" }}>Are you sure you want to delete <strong>{editingCustomer?.name}</strong>? This action cannot be undone.</p>

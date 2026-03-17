@@ -92,7 +92,7 @@
     cursor: not-allowed;
   }
 
-  button:not([data-color]):not([class*="bg-"]):not([data-variant="light"]):not([data-variant="bordered"]) {
+  button:not([data-color]):not([class*="bg-"]):not([data-variant="light"]):not([data-variant="bordered"]):not([style]) {
     background: #0ea5e9 !important;
     color: white !important;
     border: 2px solid #0ea5e9 !important;
