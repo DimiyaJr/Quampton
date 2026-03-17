@@ -72,17 +72,6 @@
     border-color: #d97706 !important;
   }
 
-  button[data-color="danger"] {
-    background: #ef4444 !important;
-    color: white !important;
-    border: 2px solid #ef4444 !important;
-  }
-
-  button[data-color="danger"]:hover {
-    background: #dc2626 !important;
-    border-color: #dc2626 !important;
-  }
-
   button[data-variant="light"] {
     background: transparent !important;
     border: 2px solid transparent !important;
@@ -94,6 +83,17 @@
 
   button[data-variant="flat"] {
     border: 2px solid transparent !important;
+  }
+
+  button[data-color="danger"] {
+    background: firebrick !important;
+    color: white !important;
+    border: 2px solid firebrick !important;
+  }
+
+  button[data-color="danger"]:hover {
+    background: #b91c1c !important;
+    border-color: #b91c1c !important;
   }
 
   button:disabled,
