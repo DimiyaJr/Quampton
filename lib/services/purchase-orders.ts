@@ -71,6 +71,48 @@ export const purchaseOrderService = {
     return data || [];
   },
 
+  async getById(id: string) {
+    const { data, error } = await supabase
+      .from('purchase_orders')
+      .select(`
+        *,
+        suppliers (
+          id,
+          code,
+          name,
+          email,
+          phone,
+          address,
+          city,
+          country
+        ),
+        purchase_order_items (
+          id,
+          quantity,
+          cost,
+          products (
+            id,
+            sku,
+            name
+          )
+        )
+      `)
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async delete(id: string) {
+    const { error } = await supabase
+      .from('purchase_orders')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+
   async generateCode() {
     const { data } = await supabase
       .from('purchase_orders')
