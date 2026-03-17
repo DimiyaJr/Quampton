@@ -199,8 +199,8 @@ export default function CustomersPage() {
         </Button>
       </div>
 
-      <div className="overflow-x-auto">
-        <Table aria-label="Customers table" shadow="sm">
+      <div style={{ overflowX: "auto", width: "100%" }}>
+        <Table aria-label="Customers table" shadow="sm" style={{ minWidth: "820px" }}>
           <TableHeader>
             <TableColumn>CODE</TableColumn>
             <TableColumn>NAME</TableColumn>

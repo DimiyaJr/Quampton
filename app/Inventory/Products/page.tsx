@@ -287,8 +287,8 @@ export default function ProductPage() {
         </Button>
       </div>
 
-      <div className="overflow-x-auto">
-      <Table aria-label="Products table">
+      <div style={{ overflowX: "auto", width: "100%" }}>
+      <Table aria-label="Products table" style={{ minWidth: "900px" }}>
         <TableHeader>
           <TableColumn>SKU</TableColumn>
           <TableColumn>IMAGE</TableColumn>
@@ -301,7 +301,7 @@ export default function ProductPage() {
           <TableColumn>STATUS</TableColumn>
           <TableColumn>ACTIONS</TableColumn>
         </TableHeader>
-        <TableBody items={products} isLoading={loading} loadingContent={<div>Loading...</div>}>
+        <TableBody items={products} isLoading={loading} loadingContent={<div>Loading...</div>} emptyContent="No products found. Add your first product!">
           {(product) => {
             const stock = getStockStatus(product.quantity);
             return (
@@ -326,7 +326,7 @@ export default function ProductPage() {
                   <Chip color={stock.color} variant="flat" size="sm">{stock.label}</Chip>
                 </TableCell>
                 <TableCell>
-                  <div style={{ display: "flex", gap: "8px" }}>
+                  <div style={{ display: "flex", gap: "6px", flexWrap: "nowrap" }}>
                     <Button size="sm" color="primary" startContent={<IconEdit size={15} />} onPress={() => handleEdit(product)}>Edit</Button>
                     <Button size="sm" color="danger" startContent={<IconTrashX size={15} />} onPress={() => { setEditingProduct(product); onDeleteOpen(); }}>Delete</Button>
                   </div>
