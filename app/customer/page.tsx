@@ -1,13 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Table, TableHeader, TableBody, TableRow, TableCell, TableColumn } from "@nextui-org/table";
-import { Modal, ModalHeader, ModalBody, ModalFooter, ModalContent, useDisclosure } from "@nextui-org/modal";
-import { Select, SelectItem } from "@nextui-org/select";
-import { Chip } from "@nextui-org/chip";
-import { IconTrashX, IconSquareRoundedPlus, IconEdit } from "@tabler/icons-react";
+import { IconTrashX, IconSquareRoundedPlus, IconEdit, IconX } from "@tabler/icons-react";
 import { customerService } from "@/lib/services/customers";
 import { countries } from "@/app/data/Countries";
 
@@ -23,27 +19,81 @@ interface Customer {
   status: number;
 }
 
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "8px 12px",
+  border: "1px solid #d1d5db",
+  borderRadius: "8px",
+  fontSize: "14px",
+  outline: "none",
+  background: "#fff",
+  color: "#111827",
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: "13px",
+  fontWeight: 500,
+  color: "#374151",
+  marginBottom: "4px",
+  display: "block",
+};
+
+function StatusBadge({ active }: { active: boolean }) {
+  return (
+    <span style={{
+      display: "inline-flex",
+      alignItems: "center",
+      padding: "2px 10px",
+      borderRadius: "999px",
+      fontSize: "12px",
+      fontWeight: 500,
+      background: active ? "#dcfce7" : "#f3f4f6",
+      color: active ? "#166534" : "#6b7280",
+    }}>
+      {active ? "Active" : "Inactive"}
+    </span>
+  );
+}
+
+function SimpleModal({ isOpen, onClose, title, children, footer }: {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  footer: React.ReactNode;
+}) {
+  if (!isOpen) return null;
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{ background: "#fff", borderRadius: "16px", width: "100%", maxWidth: "560px", maxHeight: "90vh", overflow: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px 16px", borderBottom: "1px solid #f1f5f9" }}>
+          <h3 style={{ fontSize: "17px", fontWeight: 700, color: "#111827", margin: 0 }}>{title}</h3>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#6b7280", padding: "4px", display: "flex" }}>
+            <IconX size={20} />
+          </button>
+        </div>
+        <div style={{ padding: "20px 24px" }}>{children}</div>
+        <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end", padding: "16px 24px", borderTop: "1px solid #f1f5f9" }}>{footer}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [formValues, setFormValues] = useState<Customer>({
-    name: "",
-    email: "",
-    contact: "",
-    address: "",
-    city: "",
-    country: "",
-    status: 1,
+    name: "", email: "", contact: "", address: "", city: "", country: "", status: 1,
   });
 
-  const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
-  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
-  const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
-
-  useEffect(() => {
-    loadCustomers();
-  }, []);
+  useEffect(() => { loadCustomers(); }, []);
 
   const loadCustomers = async () => {
     try {
@@ -62,46 +112,18 @@ export default function CustomersPage() {
     setFormValues({ name: "", email: "", contact: "", address: "", city: "", country: "", status: 1 });
   };
 
-  const handleAdd = () => {
-    setEditingCustomer(null);
-    resetForm();
-    onAddOpen();
-  };
-
-  const handleEdit = (customer: Customer) => {
-    setEditingCustomer(customer);
-    setFormValues({ ...customer });
-    onEditOpen();
-  };
+  const handleAdd = () => { setEditingCustomer(null); resetForm(); setIsAddOpen(true); };
+  const handleEdit = (c: Customer) => { setEditingCustomer(c); setFormValues({ ...c }); setIsEditOpen(true); };
 
   const handleSave = async () => {
-    if (!formValues.name.trim()) {
-      alert("Customer name is required!");
-      return;
-    }
-
+    if (!formValues.name.trim()) { alert("Customer name is required!"); return; }
     try {
       if (editingCustomer) {
-        await customerService.update(editingCustomer.id!, {
-          name: formValues.name,
-          email: formValues.email,
-          contact: formValues.contact,
-          address: formValues.address,
-          city: formValues.city,
-          country: formValues.country,
-        });
-        onEditClose();
+        await customerService.update(editingCustomer.id!, { name: formValues.name, email: formValues.email, contact: formValues.contact, address: formValues.address, city: formValues.city, country: formValues.country });
+        setIsEditOpen(false);
       } else {
-        await customerService.create({
-          name: formValues.name,
-          email: formValues.email,
-          contact: formValues.contact,
-          address: formValues.address,
-          city: formValues.city,
-          country: formValues.country,
-          status: 1,
-        });
-        onAddClose();
+        await customerService.create({ name: formValues.name, email: formValues.email, contact: formValues.contact, address: formValues.address, city: formValues.city, country: formValues.country, status: 1 });
+        setIsAddOpen(false);
       }
       resetForm();
       loadCustomers();
@@ -114,7 +136,7 @@ export default function CustomersPage() {
   const handleDeleteConfirm = async () => {
     try {
       await customerService.delete(editingCustomer!.id!);
-      onDeleteClose();
+      setIsDeleteOpen(false);
       loadCustomers();
     } catch (error: any) {
       console.error("Error deleting customer:", error);
@@ -122,53 +144,45 @@ export default function CustomersPage() {
     }
   };
 
+  const f = (field: keyof Customer) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setFormValues(prev => ({ ...prev, [field]: e.target.value }));
+
   const customerForm = (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
-          label="Full Name"
-          placeholder="Enter customer name"
-          value={formValues.name}
-          onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
-          isRequired
-        />
-        <Input
-          label="Email"
-          type="email"
-          placeholder="customer@example.com"
-          value={formValues.email}
-          onChange={(e) => setFormValues({ ...formValues, email: e.target.value })}
-        />
+    <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+        <div>
+          <label style={labelStyle}>Full Name *</label>
+          <input style={inputStyle} placeholder="Enter customer name" value={formValues.name} onChange={f("name")} />
+        </div>
+        <div>
+          <label style={labelStyle}>Email</label>
+          <input style={inputStyle} type="email" placeholder="customer@example.com" value={formValues.email} onChange={f("email")} />
+        </div>
       </div>
-      <Input
-        label="Phone / Contact"
-        placeholder="+1 234 567 8900"
-        value={formValues.contact}
-        onChange={(e) => setFormValues({ ...formValues, contact: e.target.value })}
-      />
-      <Input
-        label="Address"
-        placeholder="Street address"
-        value={formValues.address}
-        onChange={(e) => setFormValues({ ...formValues, address: e.target.value })}
-      />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
-          label="City"
-          placeholder="City"
-          value={formValues.city}
-          onChange={(e) => setFormValues({ ...formValues, city: e.target.value })}
-        />
-        <Select
-          label="Country"
-          placeholder="Select country"
-          selectedKeys={formValues.country ? [formValues.country] : []}
-          onChange={(e) => setFormValues({ ...formValues, country: e.target.value })}
-        >
-          {countries.map((c) => (
-            <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>
-          ))}
-        </Select>
+      <div>
+        <label style={labelStyle}>Phone / Contact</label>
+        <input style={inputStyle} placeholder="+1 234 567 8900" value={formValues.contact} onChange={f("contact")} />
+      </div>
+      <div>
+        <label style={labelStyle}>Address</label>
+        <input style={inputStyle} placeholder="Street address" value={formValues.address} onChange={f("address")} />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+        <div>
+          <label style={labelStyle}>City</label>
+          <input style={inputStyle} placeholder="City" value={formValues.city} onChange={f("city")} />
+        </div>
+        <div>
+          <label style={labelStyle}>Country</label>
+          <select style={inputStyle} value={formValues.country} onChange={f("country")}>
+            <option value="">Select country</option>
+            {countries.map((c) => (
+              <option key={typeof c === "string" ? c : (c as any).name} value={typeof c === "string" ? c : (c as any).name}>
+                {typeof c === "string" ? c : (c as any).name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );
@@ -180,13 +194,7 @@ export default function CustomersPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Customers</h1>
           <p className="text-sm text-gray-500 mt-1">Manage your customer database</p>
         </div>
-        <Button
-          color="primary"
-          onPress={handleAdd}
-          size="md"
-          startContent={<IconSquareRoundedPlus size={18} />}
-          className="w-full sm:w-auto"
-        >
+        <Button color="primary" onPress={handleAdd} size="md" startContent={<IconSquareRoundedPlus size={18} />} className="w-full sm:w-auto">
           Add Customer
         </Button>
       </div>
@@ -212,15 +220,11 @@ export default function CustomersPage() {
                 <TableCell style={{ color: "#374151" }}>{customer.contact || "-"}</TableCell>
                 <TableCell style={{ color: "#374151" }}>{customer.city || "-"}</TableCell>
                 <TableCell style={{ color: "#374151" }}>{customer.country || "-"}</TableCell>
-                <TableCell>
-                  <Chip color={customer.status === 1 ? "success" : "default"} variant="flat" size="sm">
-                    {customer.status === 1 ? "Active" : "Inactive"}
-                  </Chip>
-                </TableCell>
+                <TableCell><StatusBadge active={customer.status === 1} /></TableCell>
                 <TableCell>
                   <div className="flex gap-2">
                     <Button size="sm" color="primary" startContent={<IconEdit size={15} />} onPress={() => handleEdit(customer)}>Edit</Button>
-                    <Button size="sm" color="danger" startContent={<IconTrashX size={15} />} onPress={() => { setEditingCustomer(customer); onDeleteOpen(); }}>Delete</Button>
+                    <Button size="sm" color="danger" startContent={<IconTrashX size={15} />} onPress={() => { setEditingCustomer(customer); setIsDeleteOpen(true); }}>Delete</Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -229,46 +233,28 @@ export default function CustomersPage() {
         </Table>
       </div>
 
-      <Modal isOpen={isAddOpen} onClose={() => { onAddClose(); resetForm(); }} size="lg" hideCloseButton>
-        <ModalContent>
-          <ModalHeader>
-            <span>Add New Customer</span>
-          </ModalHeader>
-          <ModalBody>{customerForm}</ModalBody>
-          <ModalFooter>
-            <Button color="danger" variant="light" onPress={() => { onAddClose(); resetForm(); }}>Cancel</Button>
-            <Button color="primary" onPress={handleSave}>Create Customer</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <SimpleModal isOpen={isAddOpen} onClose={() => { setIsAddOpen(false); resetForm(); }} title="Add New Customer"
+        footer={<>
+          <button onClick={() => { setIsAddOpen(false); resetForm(); }} style={{ padding: "8px 18px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "#fff", cursor: "pointer", fontSize: "14px", color: "#374151" }}>Cancel</button>
+          <button onClick={handleSave} style={{ padding: "8px 18px", borderRadius: "8px", border: "none", background: "#006FEE", color: "#fff", cursor: "pointer", fontSize: "14px", fontWeight: 600 }}>Create Customer</button>
+        </>}
+      >{customerForm}</SimpleModal>
 
-      <Modal isOpen={isEditOpen} onClose={() => { onEditClose(); resetForm(); }} size="lg" hideCloseButton>
-        <ModalContent>
-          <ModalHeader>
-            <span>Edit Customer</span>
-          </ModalHeader>
-          <ModalBody>{customerForm}</ModalBody>
-          <ModalFooter>
-            <Button color="danger" variant="light" onPress={() => { onEditClose(); resetForm(); }}>Cancel</Button>
-            <Button color="primary" onPress={handleSave}>Update Customer</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <SimpleModal isOpen={isEditOpen} onClose={() => { setIsEditOpen(false); resetForm(); }} title="Edit Customer"
+        footer={<>
+          <button onClick={() => { setIsEditOpen(false); resetForm(); }} style={{ padding: "8px 18px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "#fff", cursor: "pointer", fontSize: "14px", color: "#374151" }}>Cancel</button>
+          <button onClick={handleSave} style={{ padding: "8px 18px", borderRadius: "8px", border: "none", background: "#006FEE", color: "#fff", cursor: "pointer", fontSize: "14px", fontWeight: 600 }}>Update Customer</button>
+        </>}
+      >{customerForm}</SimpleModal>
 
-      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="sm" hideCloseButton>
-        <ModalContent>
-          <ModalHeader>
-            <span>Confirm Delete</span>
-          </ModalHeader>
-          <ModalBody>
-            <p>Are you sure you want to delete <strong>{editingCustomer?.name}</strong>? This action cannot be undone.</p>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="default" variant="light" onPress={onDeleteClose}>Cancel</Button>
-            <Button color="danger" onPress={handleDeleteConfirm}>Delete</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <SimpleModal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} title="Confirm Delete"
+        footer={<>
+          <button onClick={() => setIsDeleteOpen(false)} style={{ padding: "8px 18px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "#fff", cursor: "pointer", fontSize: "14px", color: "#374151" }}>Cancel</button>
+          <button onClick={handleDeleteConfirm} style={{ padding: "8px 18px", borderRadius: "8px", border: "none", background: "#f31260", color: "#fff", cursor: "pointer", fontSize: "14px", fontWeight: 600 }}>Delete</button>
+        </>}
+      >
+        <p style={{ margin: 0, color: "#374151", fontSize: "15px" }}>Are you sure you want to delete <strong>{editingCustomer?.name}</strong>? This action cannot be undone.</p>
+      </SimpleModal>
     </div>
   );
 }
