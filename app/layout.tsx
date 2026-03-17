@@ -20,9 +20,9 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="relative flex flex-col h-screen overflow-hidden">
+          <div className="relative flex flex-col h-screen">
             <NavbarWrapper />
-            <main>
+            <main className="flex-1 overflow-y-auto">
               {children}
             </main>
           </div>
