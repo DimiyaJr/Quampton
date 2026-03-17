@@ -141,8 +141,8 @@ export default function POSPage() {
     const lower = val.toLowerCase();
     const filtered = allProducts.filter(
       (p) =>
-        p.name.toLowerCase().includes(lower) ||
-        p.sku.toLowerCase().includes(lower)
+        (p.name?.toLowerCase() ?? '').includes(lower) ||
+        (p.sku?.toLowerCase() ?? '').includes(lower)
     );
     setFilteredProducts(filtered);
     setShowProductDropdown(true);
