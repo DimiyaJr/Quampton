@@ -38,18 +38,11 @@ export const purchaseOrderService = {
     if (itemsError) throw itemsError;
 
     for (const item of poData.items) {
-      const { data: product } = await supabase
-        .from('products')
-        .select('quantity')
-        .eq('id', item.product_id)
-        .single();
-
-      if (product) {
-        await supabase
-          .from('products')
-          .update({ quantity: product.quantity + item.quantity })
-          .eq('id', item.product_id);
-      }
+      const { error: stockError } = await supabase.rpc('increment_product_stock', {
+        p_product_id: item.product_id,
+        p_qty: item.quantity,
+      });
+      if (stockError) throw stockError;
     }
 
     return po;
@@ -105,6 +98,11 @@ export const purchaseOrderService = {
   },
 
   async delete(id: string) {
+    const { error: reverseError } = await supabase.rpc('reverse_po_stock', {
+      p_po_id: id,
+    });
+    if (reverseError) throw reverseError;
+
     const { error } = await supabase
       .from('purchase_orders')
       .delete()

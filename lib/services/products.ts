@@ -49,20 +49,12 @@ export const productService = {
     if (error) throw error;
   },
 
-  async updateInventory(sku: string, quantityChange: number) {
-    const { data: product } = await supabase
-      .from('products')
-      .select('quantity')
-      .eq('sku', sku)
-      .single();
-
-    if (!product) throw new Error('Product not found');
-
-    const { error } = await supabase
-      .from('products')
-      .update({ quantity: product.quantity + quantityChange })
-      .eq('sku', sku);
-
+  async updateInventory(id: string, quantityChange: number) {
+    const rpcFn = quantityChange >= 0 ? 'increment_product_stock' : 'decrement_product_stock';
+    const { error } = await supabase.rpc(rpcFn, {
+      p_product_id: id,
+      p_qty: Math.abs(quantityChange),
+    });
     if (error) throw error;
   },
 };

@@ -56,22 +56,13 @@ export const invoiceService = {
     if (itemsError) throw itemsError;
 
     const stockUpdates = invoiceData.items.filter(item => !item.is_free && item.product_id);
-    await Promise.all(
-      stockUpdates.map(async (item) => {
-        const { data: product } = await supabase
-          .from('products')
-          .select('quantity')
-          .eq('id', item.product_id!)
-          .maybeSingle();
-
-        if (product) {
-          await supabase
-            .from('products')
-            .update({ quantity: product.quantity - item.quantity })
-            .eq('id', item.product_id!);
-        }
-      })
-    );
+    for (const item of stockUpdates) {
+      const { error: stockError } = await supabase.rpc('decrement_product_stock', {
+        p_product_id: item.product_id!,
+        p_qty: item.quantity,
+      });
+      if (stockError) throw stockError;
+    }
 
     return { ...invoice, invoice_code: invoiceCode };
   },
@@ -136,6 +127,20 @@ export const invoiceService = {
 
     if (error) throw error;
     return data;
+  },
+
+  async delete(id: string) {
+    const { error: reverseError } = await supabase.rpc('reverse_invoice_stock', {
+      p_invoice_id: id,
+    });
+    if (reverseError) throw reverseError;
+
+    const { error } = await supabase
+      .from('invoices')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
   },
 
   async getSalesData(groupBy: 'daily' | 'monthly' | 'yearly' = 'monthly') {
