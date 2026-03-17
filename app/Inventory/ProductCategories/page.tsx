@@ -140,6 +140,7 @@ export default function ProductCategoriesPage() {
                   <Button
                     size="sm"
                     color="danger"
+                    variant="solid"
                     startContent={<IconTrashX size={16} />}
                     onPress={() => handleDeleteConfirm(category.id)}
                   >

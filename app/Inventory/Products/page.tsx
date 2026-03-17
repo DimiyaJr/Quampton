@@ -328,7 +328,7 @@ export default function ProductPage() {
                 <TableCell>
                   <div style={{ display: "flex", gap: "6px", flexWrap: "nowrap" }}>
                     <Button size="sm" color="primary" startContent={<IconEdit size={15} />} onPress={() => handleEdit(product)}>Edit</Button>
-                    <Button size="sm" color="danger" startContent={<IconTrashX size={15} />} onPress={() => { setEditingProduct(product); onDeleteOpen(); }}>Delete</Button>
+                    <Button size="sm" color="danger" variant="solid" startContent={<IconTrashX size={15} />} onPress={() => { setEditingProduct(product); onDeleteOpen(); }}>Delete</Button>
                   </div>
                 </TableCell>
               </TableRow>

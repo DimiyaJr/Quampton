@@ -226,7 +226,7 @@ export default function PurchaseOrderPage() {
                 <TableCell>
                   <div style={{ display: "flex", gap: "8px" }}>
                     <Button size="sm" variant="flat" color="primary" startContent={<IconEye size={15} />} onPress={() => handleView(order)}>View</Button>
-                    <Button size="sm" variant="flat" color="danger" startContent={<IconTrashX size={15} />} onPress={() => handleDelete(order)}>Delete</Button>
+                    <Button size="sm" variant="solid" color="danger" startContent={<IconTrashX size={15} />} onPress={() => handleDelete(order)}>Delete</Button>
                   </div>
                 </TableCell>
               </TableRow>

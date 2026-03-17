@@ -224,7 +224,7 @@ export default function SuppliersPage() {
                 <TableCell>
                   <div className="flex gap-2">
                     <Button size="sm" color="primary" startContent={<IconEdit size={15} />} onPress={() => handleEdit(supplier)}>Edit</Button>
-                    <Button size="sm" color="danger" startContent={<IconTrashX size={15} />} onPress={() => { setEditingSupplier(supplier); setIsDeleteOpen(true); }}>Delete</Button>
+                    <Button size="sm" color="danger" variant="solid" startContent={<IconTrashX size={15} />} onPress={() => { setEditingSupplier(supplier); setIsDeleteOpen(true); }}>Delete</Button>
                   </div>
                 </TableCell>
               </TableRow>
