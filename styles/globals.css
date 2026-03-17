@@ -85,16 +85,6 @@
     border: 2px solid transparent !important;
   }
 
-  button[data-color="danger"] {
-    background: firebrick !important;
-    color: white !important;
-    border: 2px solid firebrick !important;
-  }
-
-  button[data-color="danger"]:hover {
-    background: #b91c1c !important;
-    border-color: #b91c1c !important;
-  }
 
   button:disabled,
   button[data-disabled="true"] {
@@ -107,6 +97,21 @@
     color: white !important;
     border: 2px solid #0ea5e9 !important;
   }
+}
+
+button[data-color="danger"],
+button[data-color="danger"][data-slot="base"] {
+  background: firebrick !important;
+  background-color: firebrick !important;
+  color: white !important;
+  border: 2px solid firebrick !important;
+}
+
+button[data-color="danger"]:hover,
+button[data-color="danger"][data-slot="base"]:hover {
+  background: #b91c1c !important;
+  background-color: #b91c1c !important;
+  border-color: #b91c1c !important;
 }
 
 @layer utilities {
