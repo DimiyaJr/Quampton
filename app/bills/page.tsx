@@ -10,6 +10,7 @@ interface InvoiceListItem {
   post_date: string;
   due_date: string;
   payment_method: string;
+  payment_status: 'not_paid' | 'partial' | 'paid';
   total_amount: number;
   discount_amount: number;
   net_total: number;
@@ -49,11 +50,26 @@ const PAYMENT_COLORS: Record<string, { bg: string; color: string }> = {
   cheque: { bg: "#fef9c3", color: "#854d0e" },
 };
 
+const PAYMENT_STATUS_STYLES: Record<string, { bg: string; color: string; border: string; label: string }> = {
+  not_paid: { bg: "#fef2f2", color: "#991b1b", border: "#fca5a5", label: "Not Paid" },
+  partial: { bg: "#fffbeb", color: "#92400e", border: "#fcd34d", label: "Partial Payment" },
+  paid: { bg: "#f0fdf4", color: "#166534", border: "#86efac", label: "Full Payment" },
+};
+
 function PaymentBadge({ method }: { method: string }) {
   const style = PAYMENT_COLORS[method.toLowerCase()] || { bg: "#f3f4f6", color: "#374151" };
   return (
     <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 10px", borderRadius: "999px", fontSize: "12px", fontWeight: 500, background: style.bg, color: style.color }}>
       {method}
+    </span>
+  );
+}
+
+function PaymentStatusBadge({ status }: { status: string }) {
+  const s = PAYMENT_STATUS_STYLES[status] || PAYMENT_STATUS_STYLES.not_paid;
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 10px", borderRadius: "999px", fontSize: "11px", fontWeight: 600, background: s.bg, color: s.color, border: `1px solid ${s.border}` }}>
+      {s.label}
     </span>
   );
 }
@@ -66,6 +82,7 @@ export default function BillsPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [statusUpdating, setStatusUpdating] = useState<string | null>(null);
   const invoiceRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -135,6 +152,19 @@ export default function BillsPage() {
     await html2pdf().set({ margin: 0.5, filename: `${selectedInvoice.invoice_code}.pdf`, image: { type: "jpeg", quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: "in", format: "letter", orientation: "portrait" } }).from(element).save();
   };
 
+  const handleStatusChange = async (id: string, newStatus: 'not_paid' | 'partial' | 'paid') => {
+    setStatusUpdating(id);
+    try {
+      await invoiceService.updatePaymentStatus(id, newStatus);
+      setInvoices((prev) => prev.map((inv) => inv.id === id ? { ...inv, payment_status: newStatus } : inv));
+      setFiltered((prev) => prev.map((inv) => inv.id === id ? { ...inv, payment_status: newStatus } : inv));
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setStatusUpdating(null);
+    }
+  };
+
   const formatDate = (d: string) => d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "—";
 
   const btnBase: React.CSSProperties = { display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 14px", borderRadius: "8px", fontSize: "13px", fontWeight: 500, cursor: "pointer", border: "none" };
@@ -174,8 +204,8 @@ export default function BillsPage() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
                   <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
-                    {["Invoice No", "Customer", "Date", "Due Date", "Payment", "Discount", "Net Total", "Actions"].map((h, i) => (
-                      <th key={h} style={{ padding: "12px 16px", textAlign: i >= 5 && i <= 6 ? "right" : i === 7 ? "center" : "left", fontWeight: 600, color: "#475569", textTransform: "uppercase", fontSize: 11, letterSpacing: "0.05em" }}>{h}</th>
+                    {["Invoice No", "Customer", "Date", "Due Date", "Payment", "Discount", "Net Total", "Status", "Actions"].map((h, i) => (
+                      <th key={h} style={{ padding: "12px 16px", textAlign: i >= 5 && i <= 6 ? "right" : i === 7 || i === 8 ? "center" : "left", fontWeight: 600, color: "#475569", textTransform: "uppercase", fontSize: 11, letterSpacing: "0.05em" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -196,9 +226,29 @@ export default function BillsPage() {
                       <td style={{ padding: "12px 16px", textAlign: "right", color: "#dc2626" }}>LKR {Number(inv.discount_amount).toFixed(2)}</td>
                       <td style={{ padding: "12px 16px", textAlign: "right", fontWeight: 700, color: "#1e293b" }}>LKR {Number(inv.net_total).toFixed(2)}</td>
                       <td style={{ padding: "12px 16px", textAlign: "center" }}>
-                        <button style={{ ...btnBase, background: "#dbeafe", color: "#1e40af" }} onClick={() => handleView(inv.id)}>
-                          <IconEye size={14} /> View
-                        </button>
+                        <PaymentStatusBadge status={inv.payment_status || "not_paid"} />
+                      </td>
+                      <td style={{ padding: "12px 16px", textAlign: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+                          <select
+                            value={inv.payment_status || "not_paid"}
+                            disabled={statusUpdating === inv.id}
+                            onChange={(e) => handleStatusChange(inv.id, e.target.value as 'not_paid' | 'partial' | 'paid')}
+                            style={{
+                              padding: "5px 8px", borderRadius: "8px", fontSize: "12px", fontWeight: 500,
+                              border: "1px solid #d1d5db", outline: "none", cursor: "pointer",
+                              background: "#fff", color: "#374151",
+                              opacity: statusUpdating === inv.id ? 0.5 : 1,
+                            }}
+                          >
+                            <option value="not_paid">Not Paid</option>
+                            <option value="partial">Partial Payment</option>
+                            <option value="paid">Full Payment</option>
+                          </select>
+                          <button style={{ ...btnBase, background: "#dbeafe", color: "#1e40af" }} onClick={() => handleView(inv.id)}>
+                            <IconEye size={14} /> View
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

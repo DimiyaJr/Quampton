@@ -143,6 +143,14 @@ export const invoiceService = {
     if (error) throw error;
   },
 
+  async updatePaymentStatus(id: string, paymentStatus: 'not_paid' | 'partial' | 'paid') {
+    const { error } = await supabase
+      .from('invoices')
+      .update({ payment_status: paymentStatus })
+      .eq('id', id);
+    if (error) throw error;
+  },
+
   async getSalesData(groupBy: 'daily' | 'monthly' | 'yearly' = 'monthly') {
     const { data, error } = await supabase
       .from('invoices')
