@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/table";
@@ -9,7 +9,7 @@ import { Select, SelectItem } from "@nextui-org/select";
 import { DatePicker } from "@nextui-org/date-picker";
 import { Chip } from "@nextui-org/chip";
 import { Spinner } from "@nextui-org/spinner";
-import { IconSearch, IconPlus, IconTrash, IconUser, IconPackage, IconShoppingCart, IconReceipt } from "@tabler/icons-react";
+import { IconSearch, IconPlus, IconTrash, IconUser, IconPackage, IconShoppingCart, IconReceipt, IconGift } from "@tabler/icons-react";
 import { customerService } from "@/lib/services/customers";
 import { productService } from "@/lib/services/products";
 import { invoiceService } from "@/lib/services/invoices";
@@ -29,6 +29,13 @@ interface Customer {
   status: number;
 }
 
+interface FreeItemDef {
+  product_id: string;
+  product_name: string;
+  sku: string;
+  quantity: number;
+}
+
 interface Product {
   id: string;
   sku: string;
@@ -37,6 +44,7 @@ interface Product {
   quantity: number;
   max_discount: number;
   category_id: string;
+  free_items?: FreeItemDef[] | null;
 }
 
 interface CartItem {
@@ -68,6 +76,10 @@ export default function POSPage() {
   const [dueDate, setDueDate] = useState(today(getLocalTimeZone()));
   const [loading, setLoading] = useState(false);
   const [invoiceCode, setInvoiceCode] = useState("");
+
+  const [freeProductId, setFreeProductId] = useState("");
+  const [freeProductQty, setFreeProductQty] = useState(1);
+
   const invoiceRef = useRef<HTMLDivElement>(null);
   const customerRef = useRef<HTMLDivElement>(null);
   const productRef = useRef<HTMLDivElement>(null);
@@ -193,63 +205,17 @@ export default function POSPage() {
       });
     }
 
-    const productName = selectedProduct.name;
-
-    if (productName === "DHP") {
-      let freeDHP = 0;
-      let freeLepto = 0;
-      if (itemQty >= 200) { freeDHP = 50; freeLepto = 250; }
-      else if (itemQty >= 150) { freeDHP = 35; freeLepto = 185; }
-      else if (itemQty >= 100) { freeDHP = 25; freeLepto = 125; }
-      else if (itemQty >= 50) { freeDHP = 12; freeLepto = 62; }
-      if (freeDHP > 0) {
-        newCart.push({ productId: "", sku: "DHP_FREE", productName: "DHP (Free)", price: 0, quantity: freeDHP, discount: 100, isFree: true });
-        newCart.push({ productId: "", sku: "LEPTO_FREE", productName: "Lepto (Free)", price: 0, quantity: freeLepto, discount: 100, isFree: true });
-      }
-    }
-
-    if (productName === "Parvo") {
-      let freeParvo = 0;
-      let freeDilund = 0;
-      if (itemQty >= 200) { freeParvo = 50; freeDilund = 250; }
-      else if (itemQty >= 150) { freeParvo = 35; freeDilund = 185; }
-      else if (itemQty >= 100) { freeParvo = 25; freeDilund = 125; }
-      else if (itemQty >= 50) { freeParvo = 12; freeDilund = 62; }
-      if (freeParvo > 0) {
-        newCart.push({ productId: "", sku: "PARVO_FREE", productName: "Parvo (Free)", price: 0, quantity: freeParvo, discount: 100, isFree: true });
-        newCart.push({ productId: "", sku: "DILUND_FREE", productName: "Dilund (Free)", price: 0, quantity: freeDilund, discount: 100, isFree: true });
-      }
-    }
-
-    if (productName === "Puppy DP") {
-      newCart.push({ productId: "", sku: "DILUND_FREE", productName: "Dilund (Free)", price: 0, quantity: itemQty, discount: 100, isFree: true });
-    }
-
-    if (productName === "Tri Cat") {
-      const freeTriCat = Math.floor(itemQty / 10);
-      if (freeTriCat > 0) {
-        newCart.push({ productId: "", sku: "TRI_CAT_FREE", productName: "Tri Cat (Free)", price: 0, quantity: freeTriCat, discount: 100, isFree: true });
-      }
-    }
-
-    if (productName === "Beranil") {
-      const freeBeranil = Math.floor(itemQty / 10);
-      if (freeBeranil > 0) {
-        newCart.push({ productId: "", sku: "BERANIL_FREE", productName: "Beranil (Free)", price: 0, quantity: freeBeranil, discount: 100, isFree: true });
-      }
-    }
-
-    if (productName === "Avilin") {
-      const freeAvilin = Math.floor(itemQty / 10);
-      if (freeAvilin > 0) {
-        newCart.push({ productId: "", sku: "AVILIN_FREE", productName: "Avilin (Free)", price: 0, quantity: freeAvilin, discount: 100, isFree: true });
-      }
-    }
-
-    if (productName === "Prednisolone") {
-      const freePrednisolone = Math.floor(itemQty / 10);
-      if (freePrednisolone > 0) {
-        newCart.push({ productId: "", sku: "PREDNISOLONE_FREE", productName: "Prednisolone (Free)", price: 0, quantity: freePrednisolone, discount: 100, isFree: true });
+    if (selectedProduct.free_items && selectedProduct.free_items.length > 0) {
+      for (const fi of selectedProduct.free_items) {
+        newCart.push({
+          productId: fi.product_id || "",
+          sku: `${fi.sku}_FREE`,
+          productName: `${fi.product_name} (Free)`,
+          price: 0,
+          quantity: fi.quantity,
+          discount: 100,
+          isFree: true,
+        });
       }
     }
 
@@ -258,6 +224,27 @@ export default function POSPage() {
     setProductSearch("");
     setItemQty(1);
     setItemDiscount(0);
+  };
+
+  const handleAddFreeToCart = () => {
+    if (!freeProductId) return;
+    if (freeProductQty <= 0) return;
+    const product = allProducts.find((p) => p.id === freeProductId);
+    if (!product) return;
+    setCart((prev) => [
+      ...prev,
+      {
+        productId: product.id,
+        sku: `${product.sku}_FREE`,
+        productName: `${product.name} (Free)`,
+        price: 0,
+        quantity: freeProductQty,
+        discount: 100,
+        isFree: true,
+      },
+    ]);
+    setFreeProductId("");
+    setFreeProductQty(1);
   };
 
   const handleRemoveFromCart = (index: number) => {
@@ -447,7 +434,6 @@ export default function POSPage() {
         </div>
 
         <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
-          {/* Left: Main POS panel */}
           <div style={{ flex: 1, minWidth: 600, display: "flex", flexDirection: "column", gap: 20 }}>
 
             {/* Customer section */}
@@ -476,10 +462,7 @@ export default function POSPage() {
                       <div
                         key={customer.id}
                         onClick={() => handleSelectCustomer(customer)}
-                        style={{
-                          padding: "10px 14px", cursor: "pointer", borderBottom: "1px solid #f1f5f9",
-                          transition: "background 0.15s"
-                        }}
+                        style={{ padding: "10px 14px", cursor: "pointer", borderBottom: "1px solid #f1f5f9", transition: "background 0.15s" }}
                         onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f7ff")}
                         onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
                       >
@@ -517,24 +500,16 @@ export default function POSPage() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 14 }}>
                 <div>
                   <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 4 }}>Post Date</div>
-                  <DatePicker
-                    value={postDate}
-                    onChange={(date: CalendarDate | null) => date && setPostDate(date)}
-                    size="sm"
-                  />
+                  <DatePicker value={postDate} onChange={(date: CalendarDate | null) => date && setPostDate(date)} size="sm" />
                 </div>
                 <div>
                   <div style={{ fontSize: 12, fontWeight: 500, color: "#475569", marginBottom: 4 }}>Due Date</div>
-                  <DatePicker
-                    value={dueDate}
-                    onChange={(date: CalendarDate | null) => date && setDueDate(date)}
-                    size="sm"
-                  />
+                  <DatePicker value={dueDate} onChange={(date: CalendarDate | null) => date && setDueDate(date)} size="sm" />
                 </div>
               </div>
             </div>
 
-            {/* Product add section */}
+            {/* Add Product section */}
             <div style={{ background: "#fff", borderRadius: 16, padding: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.07)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
                 <IconPackage size={18} color="#2563eb" />
@@ -563,10 +538,7 @@ export default function POSPage() {
                           <div
                             key={product.id}
                             onClick={() => handleSelectProduct(product)}
-                            style={{
-                              padding: "10px 14px", cursor: "pointer", borderBottom: "1px solid #f1f5f9",
-                              transition: "background 0.15s"
-                            }}
+                            style={{ padding: "10px 14px", cursor: "pointer", borderBottom: "1px solid #f1f5f9", transition: "background 0.15s" }}
                             onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f7ff")}
                             onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
                           >
@@ -576,6 +548,11 @@ export default function POSPage() {
                               <span style={{ color: "#16a34a" }}>In Stock: {product.quantity}</span>
                               <span style={{ color: "#2563eb" }}>LKR {Number(product.price).toFixed(2)}</span>
                             </div>
+                            {product.free_items && product.free_items.length > 0 && (
+                              <div style={{ fontSize: 11, color: "#16a34a", marginTop: 2 }}>
+                                Free: {product.free_items.map((fi) => `+${fi.quantity} ${fi.product_name}`).join(", ")}
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -621,12 +598,7 @@ export default function POSPage() {
                   />
                 </div>
 
-                <Button
-                  color="primary"
-                  onPress={handleAddToCart}
-                  style={{ height: 36 }}
-                  startContent={<IconPlus size={16} />}
-                >
+                <Button color="primary" onPress={handleAddToCart} style={{ height: 36 }} startContent={<IconPlus size={16} />}>
                   Add
                 </Button>
               </div>
@@ -634,7 +606,7 @@ export default function POSPage() {
               {selectedProduct && (
                 <div style={{
                   marginTop: 12, background: "#f0fdf4", borderRadius: 8, padding: "8px 14px",
-                  border: "1px solid #bbf7d0", display: "flex", gap: 24, fontSize: 13
+                  border: "1px solid #bbf7d0", display: "flex", gap: 24, fontSize: 13, flexWrap: "wrap"
                 }}>
                   <span><strong>Price:</strong> LKR {Number(selectedProduct.price).toFixed(2)}</span>
                   <span><strong>In Stock:</strong> {selectedProduct.quantity}</span>
@@ -644,8 +616,64 @@ export default function POSPage() {
                       <strong>Line Total:</strong> LKR {(Number(selectedProduct.price) * itemQty * (1 - itemDiscount / 100)).toFixed(2)}
                     </span>
                   )}
+                  {selectedProduct.free_items && selectedProduct.free_items.length > 0 && (
+                    <span style={{ color: "#16a34a" }}>
+                      <strong>Includes free:</strong> {selectedProduct.free_items.map((fi) => `${fi.quantity}x ${fi.product_name}`).join(", ")}
+                    </span>
+                  )}
                 </div>
               )}
+
+              {/* Manual free item row */}
+              <div style={{ marginTop: 16, borderTop: "1px solid #f1f5f9", paddingTop: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <IconGift size={16} color="#16a34a" />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>Add Free Item Manually</span>
+                </div>
+                <div style={{ display: "flex", gap: 10, alignItems: "flex-end" }}>
+                  <div style={{ flex: 1 }}>
+                    <select
+                      value={freeProductId}
+                      onChange={(e) => setFreeProductId(e.target.value)}
+                      style={{
+                        width: "100%", padding: "8px 10px", border: "1px solid #d1d5db",
+                        borderRadius: "8px", fontSize: "13px", outline: "none", background: "#fff", color: "#111827",
+                      }}
+                    >
+                      <option value="">Select product to give free...</option>
+                      {allProducts.map((p) => (
+                        <option key={p.id} value={p.id}>{p.name} ({p.sku})</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div style={{ width: "90px" }}>
+                    <input
+                      type="number"
+                      min={1}
+                      value={freeProductQty}
+                      onChange={(e) => setFreeProductQty(Math.max(1, Number(e.target.value)))}
+                      placeholder="Qty"
+                      style={{
+                        width: "100%", padding: "8px 10px", border: "1px solid #d1d5db",
+                        borderRadius: "8px", fontSize: "13px", outline: "none", background: "#fff", color: "#111827",
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={handleAddFreeToCart}
+                    disabled={!freeProductId}
+                    style={{
+                      padding: "8px 16px", borderRadius: "8px", border: "none",
+                      background: freeProductId ? "#16a34a" : "#d1d5db",
+                      color: "#fff", cursor: freeProductId ? "pointer" : "not-allowed",
+                      fontSize: "13px", fontWeight: 600, display: "flex", alignItems: "center", gap: "4px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <IconGift size={14} /> Add Free
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Cart */}
@@ -664,42 +692,39 @@ export default function POSPage() {
                 </div>
               ) : (
                 <div style={{ maxHeight: 320, overflowY: "auto", borderRadius: 8, border: "1px solid #f1f5f9" }}>
-                <Table aria-label="Cart" removeWrapper>
-                  <TableHeader>
-                    <TableColumn>SKU</TableColumn>
-                    <TableColumn>Product</TableColumn>
-                    <TableColumn>Qty</TableColumn>
-                    <TableColumn>Unit Price</TableColumn>
-                    <TableColumn>Discount</TableColumn>
-                    <TableColumn>Total</TableColumn>
-                    <TableColumn> </TableColumn>
-                  </TableHeader>
-                  <TableBody>
-                    {cart.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell style={{ fontSize: 13 }}>{item.sku}</TableCell>
-                        <TableCell style={{ fontSize: 13, fontWeight: 500 }}>{item.productName}</TableCell>
-                        <TableCell style={{ fontSize: 13 }}>{item.quantity}</TableCell>
-                        <TableCell style={{ fontSize: 13 }}>LKR {item.price.toFixed(2)}</TableCell>
-                        <TableCell style={{ fontSize: 13 }}>{item.discount}%</TableCell>
-                        <TableCell style={{ fontSize: 13, fontWeight: 600, color: "#2563eb" }}>
-                          LKR {(item.price * item.quantity * (1 - item.discount / 100)).toFixed(2)}
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            variant="light"
-                            color="danger"
-                            onPress={() => handleRemoveFromCart(index)}
-                          >
-                            <IconTrash size={15} />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                  <Table aria-label="Cart" removeWrapper>
+                    <TableHeader>
+                      <TableColumn>SKU</TableColumn>
+                      <TableColumn>Product</TableColumn>
+                      <TableColumn>Qty</TableColumn>
+                      <TableColumn>Unit Price</TableColumn>
+                      <TableColumn>Discount</TableColumn>
+                      <TableColumn>Total</TableColumn>
+                      <TableColumn> </TableColumn>
+                    </TableHeader>
+                    <TableBody>
+                      {cart.map((item, index) => (
+                        <TableRow key={index} style={item.isFree ? { background: "#f0fdf4" } : {}}>
+                          <TableCell style={{ fontSize: 13 }}>{item.sku}</TableCell>
+                          <TableCell style={{ fontSize: 13, fontWeight: 500, color: item.isFree ? "#16a34a" : undefined }}>
+                            {item.productName}
+                            {item.isFree && <Chip size="sm" color="success" variant="flat" style={{ marginLeft: 6 }}>Free</Chip>}
+                          </TableCell>
+                          <TableCell style={{ fontSize: 13 }}>{item.quantity}</TableCell>
+                          <TableCell style={{ fontSize: 13 }}>{item.isFree ? "Free" : `LKR ${item.price.toFixed(2)}`}</TableCell>
+                          <TableCell style={{ fontSize: 13 }}>{item.isFree ? "—" : `${item.discount}%`}</TableCell>
+                          <TableCell style={{ fontSize: 13, fontWeight: 600, color: item.isFree ? "#16a34a" : "#2563eb" }}>
+                            {item.isFree ? "LKR 0.00" : `LKR ${(item.price * item.quantity * (1 - item.discount / 100)).toFixed(2)}`}
+                          </TableCell>
+                          <TableCell>
+                            <Button isIconOnly size="sm" variant="light" color="danger" onPress={() => handleRemoveFromCart(index)}>
+                              <IconTrash size={15} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
               )}
             </div>
@@ -707,10 +732,7 @@ export default function POSPage() {
 
           {/* Right: Summary & Checkout */}
           <div style={{ width: 300, minWidth: 280 }}>
-            <div style={{
-              background: "#fff", borderRadius: 16, padding: 20,
-              boxShadow: "0 1px 4px rgba(0,0,0,0.07)", position: "sticky", top: 24
-            }}>
+            <div style={{ background: "#fff", borderRadius: 16, padding: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.07)", position: "sticky", top: 24 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
                 <IconReceipt size={18} color="#2563eb" />
                 <span style={{ fontWeight: 700, fontSize: 16, color: "#1e293b" }}>Order Summary</span>
@@ -780,10 +802,7 @@ export default function POSPage() {
             Invoice — {invoiceCode}
           </ModalHeader>
           <ModalBody>
-            <div
-              ref={invoiceRef}
-              dangerouslySetInnerHTML={{ __html: buildInvoiceHTML(invoiceCode) }}
-            />
+            <div ref={invoiceRef} dangerouslySetInnerHTML={{ __html: buildInvoiceHTML(invoiceCode) }} />
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onPress={() => generatePDF(invoiceCode)}>Download PDF</Button>
