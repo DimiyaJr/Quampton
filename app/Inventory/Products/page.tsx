@@ -92,6 +92,12 @@ export default function ProductPage() {
     }
   };
 
+  const generateSKU = () => {
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const random = Math.random().toString(36).substring(2, 5).toUpperCase();
+    return `SKU-${timestamp}-${random}`;
+  };
+
   const resetForm = () => {
     setFormValues({ sku: "", name: "", category_id: "", quantity: 0, cost: 0, price: 0, max_discount: 0, image: "" });
     setImagePreview(null);
@@ -103,7 +109,12 @@ export default function ProductPage() {
 
   const handleAdd = () => {
     setEditingProduct(null);
-    resetForm();
+    setFormValues({ sku: generateSKU(), name: "", category_id: "", quantity: 0, cost: 0, price: 0, max_discount: 0, image: "" });
+    setImagePreview(null);
+    setShowMaxDiscount(false);
+    setFreeItems([]);
+    setFreeItemProductId("");
+    setFreeItemQty(1);
     onAddOpen();
   };
 
@@ -300,9 +311,10 @@ export default function ProductPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label="SKU"
-          placeholder="Auto-generated if empty"
+          placeholder="Auto-generated"
           value={formValues.sku}
-          onChange={(e) => setFormValues({ ...formValues, sku: e.target.value })}
+          isReadOnly
+          classNames={{ input: "cursor-not-allowed opacity-70" }}
         />
         <Input
           label="Product Name"
