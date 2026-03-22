@@ -84,17 +84,23 @@ export const invoiceService = {
   },
 
   async generateCode() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const prefix = `INV${year}${month}/`;
+
     const { data } = await supabase
       .from('invoices')
       .select('invoice_code')
+      .ilike('invoice_code', `${prefix}%`)
       .order('invoice_code', { ascending: false })
       .limit(1);
 
-    if (!data || data.length === 0) return 'INV000001';
+    if (!data || data.length === 0) return `${prefix}001`;
 
     const lastCode = data[0].invoice_code;
-    const num = parseInt(lastCode.replace('INV', '')) + 1;
-    return `INV${String(num).padStart(6, '0')}`;
+    const lastNum = parseInt(lastCode.split('/')[1]) + 1;
+    return `${prefix}${String(lastNum).padStart(3, '0')}`;
   },
 
   async getById(id: string) {
