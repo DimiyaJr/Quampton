@@ -1,83 +1,81 @@
 "use client";
 
+import { FC } from "react";
+import { VisuallyHidden } from "@react-aria/visually-hidden";
+import { SwitchProps, useSwitch } from "@nextui-org/switch";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useIsSSR } from "@react-aria/ssr";
+import clsx from "clsx";
 
-export const ThemeSwitch = () => {
+import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
+
+export interface ThemeSwitchProps {
+  className?: string;
+  classNames?: SwitchProps["classNames"];
+}
+
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({
+  className,
+  classNames,
+}) => {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const isSSR = useIsSSR();
 
-  useEffect(() => setMounted(true), []);
+  const onChange = () => {
+    theme === "light" ? setTheme("dark") : setTheme("light");
+  };
 
-  if (!mounted) return <div style={{ width: "72px", height: "36px" }} />;
-
-  const isDark = theme === "dark";
+  const {
+    Component,
+    slots,
+    isSelected,
+    getBaseProps,
+    getInputProps,
+    getWrapperProps,
+  } = useSwitch({
+    isSelected: theme === "light" || isSSR,
+    "aria-label": `Switch to ${theme === "light" || isSSR ? "dark" : "light"} mode`,
+    onChange,
+  });
 
   return (
-    <button
-      aria-label={isDark ? "Switch to day mode" : "Switch to night mode"}
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "6px",
-        padding: "5px 10px 5px 6px",
-        borderRadius: "999px",
-        border: isDark ? "1.5px solid #334155" : "1.5px solid #e2e8f0",
-        background: isDark ? "#1e293b" : "#f0f9ff",
-        cursor: "pointer",
-        transition: "all 0.25s ease",
-        minWidth: "unset",
-        minHeight: "unset",
-        height: "36px",
-        boxShadow: isDark
-          ? "0 2px 8px rgba(0,0,0,0.4)"
-          : "0 2px 8px rgba(14,165,233,0.12)",
-      }}
+    <Component
+      {...getBaseProps({
+        className: clsx(
+          "px-px transition-opacity hover:opacity-80 cursor-pointer",
+          className,
+          classNames?.base,
+        ),
+      })}
     >
-      <span
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "26px",
-          height: "26px",
-          borderRadius: "50%",
-          background: isDark ? "#334155" : "#0ea5e9",
-          transition: "background 0.25s ease",
-          flexShrink: 0,
-        }}
+      <VisuallyHidden>
+        <input {...getInputProps()} />
+      </VisuallyHidden>
+      <div
+        {...getWrapperProps()}
+        className={slots.wrapper({
+          class: clsx(
+            [
+              "w-auto h-auto",
+              "bg-transparent",
+              "rounded-lg",
+              "flex items-center justify-center",
+              "group-data-[selected=true]:bg-transparent",
+              "!text-default-500",
+              "pt-px",
+              "px-0",
+              "mx-0",
+            ],
+            classNames?.wrapper,
+          ),
+        })}
       >
-        {isDark ? (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
+        {!isSelected || isSSR ? (
+          <SunFilledIcon size={22} />
         ) : (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </svg>
+          <MoonFilledIcon size={22} />
         )}
-      </span>
-      <span
-        style={{
-          fontSize: "12px",
-          fontWeight: 600,
-          color: isDark ? "#94a3b8" : "#0369a1",
-          letterSpacing: "0.02em",
-          transition: "color 0.25s ease",
-          userSelect: "none",
-        }}
-      >
-        {isDark ? "Night" : "Day"}
-      </span>
-    </button>
+      </div>
+    </Component>
   );
 };

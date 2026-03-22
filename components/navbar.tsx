@@ -20,7 +20,6 @@ import { useState, useRef, useEffect } from "react";
 import { siteConfig } from "@/config/site";
 import { SearchIcon } from "@/components/icons";
 import { useAuth } from "@/lib/auth-context";
-import { ThemeSwitch } from "@/components/theme-switch";
 
 export const Navbar = () => {
   const { logout } = useAuth();
@@ -89,9 +88,6 @@ export const Navbar = () => {
       {/* Right Side Navigation */}
       <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem className="hidden lg:flex">
-          <ThemeSwitch />
-        </NavbarItem>
         <NavbarItem className="hidden lg:flex">
           <div ref={dropdownRef} style={{ position: "relative" }}>
             <button
@@ -194,9 +190,6 @@ export const Navbar = () => {
 
       <NavbarMenu className="pt-4">
         <div className="px-2 mb-3">{searchInput}</div>
-        <div className="px-2 mb-3">
-          <ThemeSwitch />
-        </div>
         <div className="mx-2 flex flex-col gap-1">
           {[...siteConfig.navItems, ...siteConfig.navMenuItems].map((item, index) => {
             if (item.label === "Logout") {
