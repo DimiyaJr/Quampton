@@ -92,8 +92,8 @@ export const invoiceService = {
     const { data } = await supabase
       .from('invoices')
       .select('invoice_code')
-      .ilike('invoice_code', `${prefix}%`)
-      .order('invoice_code', { ascending: false })
+      .ilike('invoice_code', 'INV%/%')
+      .order('created_at', { ascending: false })
       .limit(1);
 
     if (!data || data.length === 0) return `${prefix}001`;
