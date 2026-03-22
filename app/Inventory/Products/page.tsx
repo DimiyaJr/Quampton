@@ -92,12 +92,6 @@ export default function ProductPage() {
     }
   };
 
-  const generateSKU = () => {
-    const timestamp = Date.now().toString(36).toUpperCase();
-    const random = Math.random().toString(36).substring(2, 5).toUpperCase();
-    return `SKU-${timestamp}-${random}`;
-  };
-
   const resetForm = () => {
     setFormValues({ sku: "", name: "", category_id: "", quantity: 0, cost: 0, price: 0, max_discount: 0, image: "" });
     setImagePreview(null);
@@ -107,14 +101,19 @@ export default function ProductPage() {
     setFreeItemQty(1);
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     setEditingProduct(null);
-    setFormValues({ sku: generateSKU(), name: "", category_id: "", quantity: 0, cost: 0, price: 0, max_discount: 0, image: "" });
     setImagePreview(null);
     setShowMaxDiscount(false);
     setFreeItems([]);
     setFreeItemProductId("");
     setFreeItemQty(1);
+    try {
+      const nextSKU = await productService.getNextSKU();
+      setFormValues({ sku: nextSKU, name: "", category_id: "", quantity: 0, cost: 0, price: 0, max_discount: 0, image: "" });
+    } catch {
+      setFormValues({ sku: "PRD00001", name: "", category_id: "", quantity: 0, cost: 0, price: 0, max_discount: 0, image: "" });
+    }
     onAddOpen();
   };
 

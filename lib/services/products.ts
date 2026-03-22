@@ -17,6 +17,24 @@ export const productService = {
     return data || [];
   },
 
+  async getNextSKU() {
+    const { data, error } = await supabase
+      .from('products')
+      .select('sku')
+      .like('sku', 'PRD%')
+      .order('sku', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data?.sku) return 'PRD00001';
+
+    const num = parseInt(data.sku.replace('PRD', ''), 10);
+    const next = isNaN(num) ? 1 : num + 1;
+    return `PRD${String(next).padStart(5, '0')}`;
+  },
+
   async create(product: any) {
     const { data, error } = await supabase
       .from('products')
